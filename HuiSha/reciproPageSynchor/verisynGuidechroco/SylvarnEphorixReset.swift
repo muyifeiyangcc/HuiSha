@@ -1,10 +1,3 @@
-//
-//  SylvarnEphorixReset.swift
-//  HuiSha
-//
-//  Created by yangyang on 2026/7/1.
-//
-
 import SwiftUI
 
 struct SylvarnEphorixReset: View {
@@ -62,9 +55,4 @@ struct SylvarnEphorixReset: View {
             submitAction()
         }
     }
-}
-
-#Preview {
-    SylvarnEphorixReset()
-        .environmentObject(VeyraPromptLattice())
 }

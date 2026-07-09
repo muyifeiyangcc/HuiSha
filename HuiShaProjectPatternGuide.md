@@ -60,7 +60,7 @@ struct VelmoraUserGlyph: Identifiable, Codable, Equatable {
     let id: Int
     var auricMail: String      // 邮箱
     var cipherPass: String     // 密码
-    var imageTrace: String     // 头像本地路径
+    var soulTrace: String     // 头像本地路径
     var nameSigil: String      // 昵称
 }
 ```
@@ -87,12 +87,12 @@ NavigationStack(path: $path) {
 
 ```swift
 private enum AuvrionPage: Hashable {
-    case login
-    case home
-    case chat
-    case report
-    case record(Int)
-    case accord(Bool)
+    case caldrisGate
+    case huishaHome
+    case qhorfWhisper(Int)
+    case virelonFlag
+    case selqarethCard(Int)
+    case kcnaiAccord(Bool)
 }
 ```
 
@@ -114,8 +114,8 @@ private func pop() -> () -> Void {
 优点：
 
 - 页面跳转集中在根路由，不让子页面知道全局结构。
-- 子页面只暴露闭包，例如 `backAction`、`submitAction`、`chatAction`。
-- 支持带参数页面，如 `record(Int)`、`accord(Bool)`。
+- 子页面只暴露闭包，例如 `backAction`、`submitAction`、`whisperAction`。
+- 支持带参数页面，如 `qhorfWhisper(Int)`、`kcnaiAccord(Bool)`。
 - 使用系统默认 NavigationStack 动画，不额外做低质自定义动画。
 
 建议：
@@ -238,7 +238,7 @@ promptLattice.showLoadingThen {
 - 先判断昵称、邮箱、密码、确认密码是否为空。
 - 再从 `VelmoraUserGlyphStore.shared.glyphs` 中查邮箱是否已存在，存在时提示不要重复注册。
 - 邮箱不存在时再判断两次密码是否一致。
-- 一致后通过 loading 进入资料页，并传递 `SelqarethRegisterDraft(nickname:email:password:)`。
+- 一致后通过 loading 进入资料页，并传递 `SelqarethRegisterDraft(auricName:auricMail:auricCipher:)`，避免注册草稿字段使用过于功能化的 `nickname/email/password`。
 - 资料页填写完成后，使用注册草稿加资料页字段调用 `addGlyph(...)` 创建用户，loading 结束后再写入当前用户 id、持久化首页标识和登录状态。
 
 根路由 `MirelleAuvrion` 会直接读取持久化首页标识 `QuorraxisPersistVault.nyraxisCalvethor`。为 `true` 时，`NavigationStack` 的根页面就是首页；为 `false` 时，根页面是初始页 `NoveraQuinthalis`。因此进入首页时不要再额外 `push(.home)`，而是在 loading 结束后设置持久化首页标识并清空 `path`，让根页面自己切换。
@@ -247,19 +247,19 @@ promptLattice.showLoadingThen {
 
 个人中心账号弹窗 `fbryqiw_nsoqlcu` 的按钮动作由根路由传入。退出登录需要先把弹窗切成 loading，loading 结束后再把持久化进入首页标识和登录标识都改为 `false`，并清空 `NavigationStack` 回到初始页；删除账号需要在 loading 结束后先把当前用户的邮箱和密码改为空字符串，再执行同样的退出流程。回到初始页后短暂延时，再把当前用户 id 恢复为默认值 `271968103`。
 
-好友页 `yyqfohais_ioofbasn` 使用当前用户的 `kinshipList` 作为数据源，并用当前用户的 `shadowList` 过滤黑名单用户。渲染时根据好友 id 到 `VelmoraUserGlyphStore.shared.glyphs` 中取头像和昵称；点击好友头像/昵称时把真实好友 id 传给他人页路由。
+好友页 `yyqfohais_ioofbasn` 使用当前用户的 `kinraMarks` 作为数据源，并用当前用户的 `shadeMarks` 过滤黑名单用户。渲染时根据好友 id 到 `VelmoraUserGlyphStore.shared.glyphs` 中取头像和昵称；点击好友头像/昵称时把真实好友 id 传给他人页路由。
 
-添加好友页 `QorvaneLumisAdd` 使用用户表 `VelmoraUserGlyphStore.shared.glyphs` 作为数据源，并过滤当前用户自己、当前用户黑名单 `shadowList` 中的用户、以及已经存在于当前用户好友表 `kinshipList` 中的用户。列表展示头像、昵称、性别年龄和 ID；搜索框按昵称或 ID 做本地过滤；点击头像/用户信息时把真实用户 id 传给他人页路由。
+添加好友页 `QorvaneLumisAdd` 使用用户表 `VelmoraUserGlyphStore.shared.glyphs` 作为数据源，并过滤当前用户自己、当前用户黑名单 `shadeMarks` 中的用户、以及已经存在于当前用户好友表 `kinraMarks` 中的用户。列表展示头像、昵称、性别年龄和 ID；搜索框按昵称或 ID 做本地过滤；点击头像/用户信息时把真实用户 id 传给他人页路由。
 
 添加好友页点击 `加好友` 前需要检查登录标识 `QuorraxisPersistVault.sylvarnEphorix`。未登录时弹出 `ufblkdhi_vzkaywq` 去登录弹窗；已登录时才显示好友申请已发送提示并执行后续动作。
 
-黑名单页 `MevericoNulistora` 使用当前用户的 `shadowList` 作为数据源，根据 id 从用户表中读取头像和昵称。右侧移除按钮直接把对应 id 从当前用户 `shadowList` 中删除，左侧头像不跳转。首页消息页、好友页、添加好友页、黑名单页在数据为空时显示占位图 `evoligntehozastinpece`，尺寸为 `138x166`。
+黑名单页 `MevericoNulistora` 使用当前用户的 `shadeMarks` 作为数据源，根据 id 从用户表中读取头像和昵称。右侧移除按钮直接把对应 id 从当前用户 `shadeMarks` 中删除，左侧头像不跳转。首页消息页、好友页、添加好友页、黑名单页在数据为空时显示占位图 `evoligntehozastinpece`，尺寸为 `138x166`。
 
-他人页 `uoqnfbajse_qbvjvsnoen` 通过传入的用户 id 到用户表读取头像、昵称、性别、年龄和展示 ID；亲密度卡片中的双方头像分别来自当前用户和目标用户。消息统计从 `MirelithMessageGlyphStore` 中筛选双方参与的会话，盲盒消息数量通过聊天表 `QuenlithChatGlyph.chatKind == true` 计算，相识天数用最早消息时间与当前日期计算。
+他人页 `uoqnfbajse_qbvjvsnoen` 通过传入的用户 id 到用户表读取头像、昵称、性别、年龄和展示 ID；亲密度卡片中的双方头像分别来自当前用户和目标用户。消息统计从 `MirelithMessageGlyphStore` 中筛选双方参与的会话，盲盒消息数量通过聊天表 `QhorfRune.blindKind == true` 计算，相识天数用最早消息时间与当前日期计算。
 
-他人页点击聊天按钮前需要读取登录标识 `QuorraxisPersistVault.sylvarnEphorix`。为 `false` 时通过 `VeyraPromptLattice.showLoginPanel(loginAction:)` 弹出 `ufblkdhi_vzkaywq`；为 `true` 时继续判断当前用户 `kinshipList` 是否包含目标用户 id，不包含时提示 `互为好友才能聊天`，包含时才进入聊天页。弹窗第一个按钮只关闭弹窗，第二个按钮先 loading，再执行和退出登录一致的回初始页流程。
+他人页点击聊天按钮前需要读取登录标识 `QuorraxisPersistVault.sylvarnEphorix`。为 `false` 时通过 `VeyraPromptLattice.showLoginPanel(loginAction:)` 弹出 `ufblkdhi_vzkaywq`；为 `true` 时继续判断当前用户 `kinraMarks` 是否包含目标用户 id，不包含时提示 `互为好友才能聊天`，包含时才进入聊天页。弹窗第一个按钮只关闭弹窗，第二个按钮先 loading，再执行和退出登录一致的回初始页流程。
 
-more 按钮点击前也需要检查登录标识 `QuorraxisPersistVault.sylvarnEphorix`。为 `false` 时弹出 `ufblkdhi_vzkaywq` 去登录弹窗；为 `true` 时才打开 more 弹窗。more 弹窗 `njaueiqb_zzneefja` 需要通过 `showMorePanel(targetId:reportAction:blockAction:deleteAction:)` 接收正在操作的目标用户 id。第一个按钮关闭弹窗并进入举报页；第二个按钮先 loading，再把目标用户 id 加入当前用户 `shadowList`，随后清空 `path` 回到首页根页面；第三个按钮先 loading，再从当前用户 `kinshipList` 中移除目标用户 id，同样回到首页根页面。这里回首页是利用持久化首页标识为 `true` 的根页面切换，不新增页面栈，也不是回初始页。
+more 按钮点击前也需要检查登录标识 `QuorraxisPersistVault.sylvarnEphorix`。为 `false` 时弹出 `ufblkdhi_vzkaywq` 去登录弹窗；为 `true` 时才打开 more 弹窗。more 弹窗 `njaueiqb_zzneefja` 需要通过 `showMorePanel(targetId:reportAction:blockAction:deleteAction:)` 接收正在操作的目标用户 id。第一个按钮关闭弹窗并进入举报页；第二个按钮先 loading，再把目标用户 id 加入当前用户 `shadeMarks`，随后清空 `path` 回到首页根页面；第三个按钮先 loading，再从当前用户 `kinraMarks` 中移除目标用户 id，同样回到首页根页面。这里回首页是利用持久化首页标识为 `true` 的根页面切换，不新增页面栈，也不是回初始页。
 
 个人中心 `truemirsou_thmunity` 中间钻石入口进入支付页前也要检查登录标识 `QuorraxisPersistVault.sylvarnEphorix`。未登录时弹出 `ufblkdhi_vzkaywq` 去登录弹窗；已登录时才执行充值页跳转。
 
@@ -399,15 +399,15 @@ struct VelmoraUserGlyph: Identifiable, Codable, Equatable {
     let id: Int
     var auricMail: String
     var cipherPass: String
-    var imageTrace: String
+    var soulTrace: String
     var nameSigil: String
-    var gemCount: Int
-    var shadowList: [Int]
-    var kinshipList: [Int]
-    var localeMark: String
-    var personaKind: String
-    var yearsCount: Int
-    var refreshResidue: Int
+    var dianthCount: Int
+    var shadeMarks: [Int]
+    var kinraMarks: [Int]
+    var realmMark: String
+    var mienKind: String
+    var yearCount: Int
+    var veyraResidue: Int
 }
 ```
 
@@ -440,20 +440,20 @@ Store 需要包含：
 func addGlyph(...)
 func reviseAuricMail(id: Int, value: String)
 func reviseCipherPass(id: Int, value: String)
-func reviseImageTrace(id: Int, value: String)
-func reviseImageTrace(id: Int, avatarData: Data)
+func reviseSoulTrace(id: Int, value: String)
+func reviseSoulTrace(id: Int, avatarData: Data)
 func reviseNameSigil(id: Int, value: String)
-func reviseGemCount(id: Int, value: Int)
-func reviseShadowList(id: Int, value: [Int])
-func reviseKinshipList(id: Int, value: [Int])
-func reviseLocaleMark(id: Int, value: String)
-func revisePersonaKind(id: Int, value: String)
-func reviseYearsCount(id: Int, value: Int)
-func reviseRefreshResidue(id: Int, value: Int)
-func shiftRefreshResidue(id: Int, amount: Int)
+func reviseDianthCount(id: Int, value: Int)
+func reviseShadeMarks(id: Int, value: [Int])
+func reviseKinraMarks(id: Int, value: [Int])
+func reviseRealmMark(id: Int, value: String)
+func reviseMienKind(id: Int, value: String)
+func reviseYearCount(id: Int, value: Int)
+func reviseVeyraResidue(id: Int, value: Int)
+func shiftVeyraResidue(id: Int, amount: Int)
 ```
 
-新增字段时要注意本地 JSON 兼容。已有用户数据文件可能没有新字段，因此模型可以实现 `init(from:)`，用 `decodeIfPresent` 给新增字段设置默认值，避免解码失败后回退到默认 seeds，导致用户数据被覆盖。
+本项目不需要兼容已安装旧版本或旧沙盒 JSON；每次下载后都以项目内 seeds 作为基础数据。持久化 JSON 只按当前 Swift 字段名读写，避免保留旧 key 映射造成命名回潮。新增字段时如需默认值，可用当前字段名的 `decodeIfPresent` 兜底。
 
 用户 ID 展示规则：
 
@@ -465,30 +465,27 @@ func shiftRefreshResidue(id: Int, amount: Int)
 
 支付页 `VelorDintRcare` 使用 StoreKit 1 完成消耗型内购，不能只做静态点击：
 
-- StoreKit 逻辑集中放在 `VelorDintRcareStoreKitBridge`，负责 `SKProductsRequest`、`SKPaymentQueue` 监听、购买成功/失败回调和 `finishTransaction`。
-- 支付页进入时先显示 `支付初始化中` loading，再调用 `loadProductsIfNeeded()` 请求商品信息；商品请求成功或失败都必须结束 loading。
-- 页面价格固定展示 `DianthRechargeItem.fallbackPrice` 格式化后的美元价格，不使用 StoreKit 本地化货币符号覆盖页面价格。
-- `DianthRechargeItem.fallbackPrice` 必须是 `Double` 类型，只保存数值；美元 `$` 符号只在页面展示/格式化价格时拼接。
-- 点击充值档位时调用 `storeKitBridge.buy(item)` 发起购买；购买中同一时间只允许一个商品处于支付状态。
+- StoreKit 逻辑集中放在 `VelorAsterBridge`，负责 `SKProductsRequest`、`SKPaymentQueue` 监听、购买成功/失败回调和 `finishTransaction`。
+- 支付页进入时先显示 `支付初始化中` loading，再调用 `wakeDianthIfNeeded()` 请求商品信息；商品请求成功或失败都必须结束 loading。
+- 页面价格固定展示 `VelorDianthRune.fallbackPrice` 格式化后的美元价格，不使用 StoreKit 本地化货币符号覆盖页面价格。
+- `VelorDianthRune.fallbackPrice` 必须是 `Double` 类型，只保存数值；美元 `$` 符号只在页面展示/格式化价格时拼接。
+- 点击充值档位时调用 `VelorAsterBridge.cast(_:)` 发起购买；购买中同一时间只允许一个商品处于支付状态。
 - 支付开始后必须显示全局大 loading `支付中`，直到交易成功、失败、取消或其它支付终态后结束；商品卡片上的局部 loading 也保留。
-- 购买成功后调用 `VelmoraUserGlyphStore.shiftGemCount(id:amount:)` 给当前登录用户增加对应钻石，并提示 `充值成功`。
+- 购买成功后调用 `VelmoraUserGlyphStore.shiftDianthCount(id:amount:)` 给当前登录用户增加对应钻石，并提示 `充值成功`。
 - 购买失败、用户取消、商品未加载、设备禁用内购等情况需要给出轻提示，不直接改用户金币。
 - 消耗型商品不做恢复发放；收到 `.restored` 交易时只结束交易。
-- 商品档位和商品 ID 必须集中维护在 `DianthRechargeCatalog.items`。
+- 商品档位和商品 ID 必须集中维护在 `DianthAsterVault.runes`。
 
-当前商品 ID 规则：
+当前商品 ID 使用项目内短标识，集中写在 `DianthAsterVault.runes`：
 
 ```swift
-com.hufuqwgosaive.Huisha.gems400
-com.hufuqwgosaive.Huisha.gems800
-com.hufuqwgosaive.Huisha.gems1780
-com.hufuqwgosaive.Huisha.gems2450
-com.hufuqwgosaive.Huisha.gems5150
-com.hufuqwgosaive.Huisha.gems10800
-com.hufuqwgosaive.Huisha.gems14900
-com.hufuqwgosaive.Huisha.gems29400
-com.hufuqwgosaive.Huisha.gems34500
-com.hufuqwgosaive.Huisha.gems63700
+lvbsvhxcgcrvesor
+dybuplhbtntkqaul
+dxismgcwewhrtezo
+khtxlcejaxmqcsra
+yadwwvxspgxwlndb
+qnrcuelbtiuflyky
+ymohxnvpkqxutvab
 ```
 
 ## 9. 用户头像存储方案
@@ -505,15 +502,15 @@ com.hufuqwgosaive.Huisha.gems63700
 默认头像：
 
 ```swift
-imageTrace: velmoraCacheAvatarSeed("suarrunexseternimeon1.jpg")
+soulTrace: velmoraCacheAvatarSeed("suarrunexseternimeon1.jpg")
 ```
 
 用户上传头像：
 
 ```swift
-func reviseImageTrace(id: Int, avatarData: Data) {
+func reviseSoulTrace(id: Int, avatarData: Data) {
     guard let path = velmoraStoreAvatarData(avatarData, userId: id) else { return }
-    reviseImageTrace(id: id, value: path)
+    reviseSoulTrace(id: id, value: path)
 }
 ```
 
@@ -526,7 +523,7 @@ Documents/purelinkinfinite/
 显示头像：
 
 ```swift
-if let uiImage = UIImage(contentsOfFile: user.imageTrace) {
+if let uiImage = UIImage(contentsOfFile: user.soulTrace) {
     Image(uiImage: uiImage)
         .resizable()
         .scaledToFill()
@@ -547,9 +544,9 @@ if let uiImage = UIImage(contentsOfFile: user.imageTrace) {
 ```swift
 struct MirelithMessageGlyph: Identifiable, Codable, Equatable {
     let id: Int
-    var participantMarks: [Int]  // 两个聊天用户 id
-    var displayScript: String    // 页面显示文字
-    var timeTrace: Date          // 本地时间
+    var mirelMarks: [Int]  // 两个聊天用户 id
+    var murmurSigil: String    // 页面显示文字
+    var timeSigil: Date          // 本地时间
 }
 ```
 
@@ -562,19 +559,19 @@ Documents/mirelithMessageGlyphs.json
 新增消息时外部传文字，时间使用本地当前时间：
 
 ```swift
-func addGlyph(participantMarks: [Int], displayScript: String) -> Int
+func addGlyph(mirelMarks: [Int], murmurSigil: String) -> Int
 ```
 
 修改方法只允许改显示文字和时间：
 
 ```swift
-func reviseDisplayScript(id: Int, value: String)
-func reviseTimeTrace(id: Int)
+func reviseMurmurSigil(id: Int, value: String)
+func reviseTimeSigil(id: Int)
 ```
 
 原则：
 
-- `participantMarks` 保持 `[Int]`，用于记录双方用户 id。
+- `mirelMarks` 保持 `[Int]`，用于记录双方用户 id。
 - 文案由外部传入，便于聊天页、盲盒消息、快捷回复共用。
 - 时间不由外部传入，统一使用 `Date()`，避免页面层伪造或格式不一致。
 - `addGlyph` 返回新增会话 id，聊天页在没有现成会话时可立即用这个 id 新增第一条聊天内容。
@@ -583,19 +580,19 @@ func reviseTimeTrace(id: Int)
 
 1. 从 `QuorraxisPersistVault` 读取当前用户 id。
 2. 从 `VelmoraUserGlyphStore` 找到当前用户。
-3. 只展示 `participantMarks` 中包含当前用户 id 的消息。
-4. 使用当前用户的 `shadowList` 过滤消息。
-5. 消息的 `participantMarks` 中任意用户在黑名单里时，这条消息不显示。
-6. 展示时必须显示 `participantMarks` 中不是当前用户的那个用户，读取头像、昵称和消息文字。
+3. 只展示 `mirelMarks` 中包含当前用户 id 的消息。
+4. 使用当前用户的 `shadeMarks` 过滤消息。
+5. 消息的 `mirelMarks` 中任意用户在黑名单里时，这条消息不显示。
+6. 展示时必须显示 `mirelMarks` 中不是当前用户的那个用户，读取头像、昵称和消息文字。
 
 过滤示例：
 
 ```swift
-let blockedIds = Set(currentUser?.shadowList ?? [])
+let shadeMarks = Set(auvrionPulse?.shadeMarks ?? [])
 
-let visibleMessages = messageStore.glyphs.filter { message in
-    message.participantMarks.contains(currentId)
-        && blockedIds.isDisjoint(with: Set(message.participantMarks))
+let murmurThreads = messageStore.glyphs.filter { threadGlyph in
+    threadGlyph.mirelMarks.contains(selfMark)
+        && shadeMarks.isDisjoint(with: Set(threadGlyph.mirelMarks))
 }
 ```
 
@@ -606,65 +603,66 @@ let visibleMessages = messageStore.glyphs.filter { message in
 聊天内容和消息会话分开保存。消息结构负责会话级数据，聊天结构负责每一条聊天内容：
 
 ```swift
-struct QuenlithChatGlyph: Identifiable, Codable, Equatable {
+struct QhorfRune: Identifiable, Codable, Equatable {
     let id: Int
-    var messageMark: Int     // 所属消息 id
-    var writerMark: Int      // 书写者 id
-    var textTrace: String    // 文字内容
-    var imageTrace: String   // 图片内容，本地路径或资源标识
-    var audioTrace: String   // 音频内容，本地路径或资源标识
-    var audioSeconds: Int    // 音频时长，秒
-    var chatKind: Bool       // 是否为盲盒消息，true 是，false 否
+    var mirelMark: Int     // 所属消息 id
+    var quillMark: Int      // 书写者 id
+    var textSigil: String    // 文字内容
+    var soulTrace: String   // 图片内容，本地路径或资源标识
+    var audioSigil: String   // 音频内容，本地路径或资源标识
+    var audioSpan: Int    // 音频时长，秒
+    var blindKind: Bool       // 是否为盲盒消息，true 是，false 否
 }
 ```
 
-Store 使用 `QuenlithChatGlyphStore`，保存到：
+Store 使用 `QhorfRuneStore`，保存到：
 
 ```text
-Documents/quenlithChatGlyphs.json
+Documents/qhorfRuneGlyphs.json
 ```
 
 只提供新增方法：
 
 ```swift
 func addGlyph(
-    messageMark: Int,
-    writerMark: Int,
-    textTrace: String = "",
-    imageTrace: String = "",
-    audioTrace: String = "",
-    audioSeconds: Int = 0,
-    chatKind: Bool = true
+    mirelMark: Int,
+    quillMark: Int,
+    textSigil: String = "",
+    soulTrace: String = "",
+    audioSigil: String = "",
+    audioSpan: Int = 0,
+    blindKind: Bool = true
 )
 ```
 
 原则：
 
-- `messageMark` 关联消息会话。
-- `writerMark` 关联用户表。
-- `chatKind` 只用于判断是否为盲盒消息，`true` 表示盲盒消息，`false` 表示普通消息。
+- `mirelMark` 关联消息会话。
+- `quillMark` 关联用户表。
+- `blindKind` 只用于判断是否为盲盒消息，`true` 表示盲盒消息，`false` 表示普通消息。
 - 图片和音频字段保持 String，方便后续统一使用 Documents 本地路径。
-- `audioSeconds` 使用 Int 秒数，保存和展示都简单。
+- `audioSpan` 使用 Int 秒数，保存和展示都简单。
 - 当前只允许新增，不提供修改方法，避免聊天记录被随意改写。
+- 数据层 Swift 命名使用 `mirel/qhorf/velmora/dianth/veyra` 词根；JSON 持久化同样使用当前 Swift 字段名，不保留旧字段映射。
 
 ## 9.3 聊天页交互规则
 
-聊天页 `bcawuifbiw_oqfbabcak` 使用真实数据，不再使用静态 mock：
+聊天页 `bcawuifbiw_oqfbabcak` 使用项目 seeds 与本地 Store 数据：
 
 - 路由进入聊天页时必须携带目标用户 id，标题、头像、亲密度卡片头像都从用户表读取。
-- 聊天内容从 `MirelithMessageGlyphStore` 找到双方会话，再用 `QuenlithChatGlyphStore` 根据 `messageMark` 读取每条内容。
+- 聊天内容从 `MirelithMessageGlyphStore` 找到双方会话，再用 `QhorfRuneStore` 根据 `mirelMark` 读取每条内容。
 - 会话不存在时，发送第一条消息前先调用 `MirelithMessageGlyphStore.addGlyph` 创建会话，再写聊天内容。
-- 文本消息写入 `textTrace`；图片消息写入 `imageTrace`，本地保存到 `Documents/quenlithChatImages/`。
+- 文本消息写入 `textSigil`；图片消息写入 `soulTrace`，本地保存到 `Documents/qhorfRuneImages/`。
 
 底部词组面板规则：
 
 - 默认展示词组面板，词组来自全局变量 `celuiatnryrgever`，每次显示 3 条。
-- 点击词组直接发送，必须写入 `chatKind: true`，并把会话摘要更新为 `「盲盒消息」+ 词组内容`。
+- 点击词组直接发送，必须写入 `blindKind: true`，并把会话摘要更新为 `「盲盒消息」+ 词组内容`。
 - 聊天气泡旁的 `「盲盒消息」` 标签按发送者决定位置：对方发送时显示在气泡后面，当前用户发送时显示在气泡前面。
 - 词组框尺寸为 `281x256`，刷新按钮尺寸为 `281x56`。
 - 有免费刷新次数时，刷新按钮用 `purevibrancywave.png`；没有免费次数时用 `innercirclesphere.png`。
-- 免费次数文案在聊天页刷新按钮右上角渲染，读取当前用户 `refreshResidue`。
-- 刷新逻辑必须先判断 `refreshResidue`，足够则扣 1 次并刷新 3 条词组；不足时再判断 `gemCount >= 100`，足够则扣 100 金币并刷新；金币也不足时弹出 `tbiomvy_qwubcsafw`。
+- 免费次数文案在聊天页刷新按钮右上角渲染，读取当前用户 `veyraResidue`。
+- 刷新逻辑必须先判断 `veyraResidue`，足够则扣 1 次并刷新 3 条词组；不足时再判断 `dianthCount >= 100`，足够则扣 100 金币并刷新；金币也不足时弹出 `tbiomvy_qwubcsafw`。
 - 刷新按钮需要短点击锁，避免连续点击导致免费次数显示或扣减异常。
 
 手写回复面板规则：
@@ -675,11 +673,11 @@ func addGlyph(
 - `spritimeionruefntionl.png` 是相册图片按钮，使用 `PhotosPicker` 打开相册；选中后保存图片并发送图片消息。
 - `inwsmevernemment.png` 是小麦克风按钮，点击后直接显示/隐藏 `crbillancelpueononli.png`，不做动画效果。
 - `crbillancelpueononli.png` 尺寸为 `232x43`，显示在输入栏下方居中；点击时提示 `长按开始录音`。
-- 长按 `crbillancelpueononli.png` 开始录音，松开结束录音并发送语音消息；录音文件保存到 `Documents/quenlithChatAudios/`。
+- 长按 `crbillancelpueononli.png` 开始录音，松开结束录音并发送语音消息；录音文件保存到 `Documents/qhorfRuneAudios/`。
 - 开始录音时在 `crbillancelpueononli.png` 上方显示 `treelreflectiulhaofv.png`，表示录音中。
-- 录音结束后写入 `audioTrace` 和 `audioSeconds`，会话摘要更新为 `[语音]`，并隐藏下方语音录制图片。
+- 录音结束后写入 `audioSigil` 和 `audioSpan`，会话摘要更新为 `[语音]`，并隐藏下方语音录制图片。
 - 录音消息气泡沿用普通聊天气泡背景样式，不单独使用图片背景；气泡内显示波形图标和秒数，点击录音气泡时播放本地录音文件。
-- 手写文本输入框占据剩余宽度，点击发送写入普通文本消息，`chatKind: false`。
+- 手写文本输入框占据剩余宽度，点击发送写入普通文本消息，`blindKind: false`。
 
 ## 10. Web 协议页面方案
 
@@ -710,7 +708,7 @@ func addGlyph(
 8. 给表单加输入、校验、loading、成功提示。
 9. 加 `@AppStorage` 全局持久化对象。
 10. 加本地 JSON Store 与数据结构。
-11. 把真实数据替换静态页面 mock。
+11. 把页面接入项目 seeds 与本地 Store。
 12. 每完成一组功能跑一次构建。
 
 ## 12. 常见坑
@@ -813,3 +811,10 @@ enum AppPage: Hashable {
 ## 协议网页规则
 
 - 协议页 `KcnaiwfoTqnsoa` 使用 `WKWebView` 时必须明确撑满剩余空间，并保留 loading/失败文案，避免线上地址慢或不可达时显示纯白页。
+
+## 项目命名规则
+
+- 路由 case、页面闭包、局部方法和内购类型命名要带项目词根，避免 `login/home/chat/recharge/flow` 这类通用词；单个 case 名称控制在 16 个字符以内。
+- 不保留旧沙盒数据兼容字段；当前项目内 seeds 和当前 Swift 字段名就是唯一数据基准。
+- 单页内部命名可以牺牲部分直白可读性换取项目主题感，但同一文件内不要重复复用同一组通用名称；例如添加好友页使用 `lumis/kinra/qorvane/selqareth` 词根组合。
+- 为降低模板感，路由栈、弹窗 action、列表行、空状态、头像 helper、支付档位等小变量优先使用 `auric/veyra/kinra/qhorf/velor/dianth/mirelith` 等项目词根；`body`、`id`、`path(in:)` 等框架命名可以保留。

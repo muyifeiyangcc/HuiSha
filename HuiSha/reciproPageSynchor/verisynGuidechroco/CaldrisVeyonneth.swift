@@ -1,10 +1,3 @@
-//
-//  CaldrisVeyonneth.swift
-//  HuiSha
-//
-//  Created by yangyang on 2026/7/1.
-//
-
 import SwiftUI
 
 struct CaldrisVeyonneth: View {
@@ -17,8 +10,8 @@ struct CaldrisVeyonneth: View {
     var registerAction: () -> Void = {}
     var submitAction: () -> Void = {}
 
-    @State private var auvrionSelqareth = "huisha@gmail.com"
-    @State private var nyraxisCalvethor = "123456"
+    @State private var auvrionSelqareth = ""
+    @State private var nyraxisCalvethor = ""
 
     var body: some View {
         QuenraLuminethShell(title: "登录", backAction: backAction) {
@@ -82,10 +75,4 @@ struct CaldrisVeyonneth: View {
             submitAction()
         }
     }
-}
-
-#Preview {
-    CaldrisVeyonneth()
-        .environmentObject(VeyraPromptLattice())
-        .environmentObject(QuorraxisPersistVault.light)
 }

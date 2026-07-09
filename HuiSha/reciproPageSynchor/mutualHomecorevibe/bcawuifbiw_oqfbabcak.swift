@@ -12,14 +12,14 @@ struct bcawuifbiw_oqfbabcak: View {
     var deleteAction: (Int) -> Void = { _ in }
     var loginPromptAction: () -> Void = {}
     var profileAction: () -> Void = {}
-    var rechargeAction: () -> Void = {}
+    var coinAction: () -> Void = {}
     var phraseAction: (String) -> Void = { _ in }
 
     @EnvironmentObject private var promptLattice: VeyraPromptLattice
     @EnvironmentObject private var persistVault: QuorraxisPersistVault
     @StateObject private var userStore = VelmoraUserGlyphStore.shared
     @StateObject private var messageStore = MirelithMessageGlyphStore.shared
-    @StateObject private var chatStore = QuenlithChatGlyphStore.shared
+    @StateObject private var qhorfStore = QhorfRuneStore.shared
 
     @State private var phrases = Array(celuiatnryrgever.prefix(3))
     @State private var isRefreshLocked = false
@@ -49,20 +49,20 @@ struct bcawuifbiw_oqfbabcak: View {
     private var conversation: MirelithMessageGlyph? {
         let pair = Set([persistVault.auvrionSelqareth, targetUserId])
         return messageStore.glyphs
-            .filter { Set($0.participantMarks) == pair }
-            .sorted { $0.timeTrace > $1.timeTrace }
+            .filter { Set($0.mirelMarks) == pair }
+            .sorted { $0.timeSigil > $1.timeSigil }
             .first
     }
 
-    private var visibleChats: [QuenlithChatGlyph] {
+    private var visibleQhorfs: [QhorfRune] {
         guard let messageId = conversation?.id else { return [] }
-        return chatStore.glyphs
-            .filter { $0.messageMark == messageId }
+        return qhorfStore.glyphs
+            .filter { $0.mirelMark == messageId }
             .sorted { $0.id < $1.id }
     }
 
-    private var refreshResidue: Int {
-        currentUser?.refreshResidue ?? 0
+    private var veyraResidue: Int {
+        currentUser?.veyraResidue ?? 0
     }
 
     var body: some View {
@@ -79,20 +79,20 @@ struct bcawuifbiw_oqfbabcak: View {
                             .padding(.horizontal, 16)
                             .padding(.top, 12)
 
-                        Text(conversation.map { timeText($0.timeTrace) } ?? timeText(Date()))
+                        Text(conversation.map { timeText($0.timeSigil) } ?? timeText(Date()))
                             .font(.system(size: 12))
                             .foregroundColor(AuvrionChromatics.vellumQuorraxis)
                             .padding(.top, 22)
 
-                        if visibleChats.isEmpty {
+                        if visibleQhorfs.isEmpty {
                             Text("还没有消息")
                                 .font(.system(size: 14))
                                 .foregroundColor(AuvrionChromatics.vellumQuorraxis)
                                 .padding(.top, 40)
                         } else {
                             VStack(spacing: 14) {
-                                ForEach(visibleChats) { chat in
-                                    chatBubble(chat)
+                                ForEach(visibleQhorfs) { qhorf in
+                                    qhorfBubble(qhorf)
                                 }
                             }
                             .padding(.top, 17)
@@ -174,9 +174,9 @@ struct bcawuifbiw_oqfbabcak: View {
                 .frame(width: 343, height: 147)
 
             HStack(spacing: 0) {
-                avatarView(path: currentUser?.imageTrace ?? "", size: 38)
+                avatarView(path: currentUser?.soulTrace ?? "", size: 38)
 
-                avatarView(path: targetUser?.imageTrace ?? "", size: 38)
+                avatarView(path: targetUser?.soulTrace ?? "", size: 38)
             }
             .padding(12)
         }
@@ -184,8 +184,8 @@ struct bcawuifbiw_oqfbabcak: View {
         .clipped()
     }
 
-    private func chatBubble(_ chat: QuenlithChatGlyph) -> some View {
-        let isMine = chat.writerMark == persistVault.auvrionSelqareth
+    private func qhorfBubble(_ qhorf: QhorfRune) -> some View {
+        let isMine = qhorf.quillMark == persistVault.auvrionSelqareth
 
         return HStack(spacing: 9) {
             if isMine {
@@ -197,7 +197,7 @@ struct bcawuifbiw_oqfbabcak: View {
                     profileAction()
                 }
             } label: {
-                avatarView(path: isMine ? currentUser?.imageTrace ?? "" : targetUser?.imageTrace ?? "", size: 40)
+                avatarView(path: isMine ? currentUser?.soulTrace ?? "" : targetUser?.soulTrace ?? "", size: 40)
             }
             .buttonStyle(.plain)
             .opacity(isMine ? 0 : 1)
@@ -205,13 +205,13 @@ struct bcawuifbiw_oqfbabcak: View {
             .frame(width: 40, height: 40)
 
             HStack(alignment: .bottom, spacing: 4) {
-                if chat.chatKind && isMine {
+                if qhorf.blindKind && isMine {
                     blindMessageLabel
                 }
 
-                chatContent(chat, isMine: isMine)
+                qhorfContent(qhorf, isMine: isMine)
 
-                if chat.chatKind && !isMine {
+                if qhorf.blindKind && !isMine {
                     blindMessageLabel
                 }
             }
@@ -224,16 +224,16 @@ struct bcawuifbiw_oqfbabcak: View {
     }
 
     @ViewBuilder
-    private func chatContent(_ chat: QuenlithChatGlyph, isMine: Bool) -> some View {
-        if !chat.audioTrace.isEmpty {
+    private func qhorfContent(_ qhorf: QhorfRune, isMine: Bool) -> some View {
+        if !qhorf.audioSigil.isEmpty {
             Button {
-                playAudioMessage(chat)
+                playQhorfAudio(qhorf)
             } label: {
                 HStack(spacing: 7) {
                     Image(systemName: "waveform")
                         .font(.system(size: 13, weight: .semibold))
 
-                    Text("\(max(chat.audioSeconds, 1))'s")
+                    Text("\(max(qhorf.audioSpan, 1))'s")
                         .font(.system(size: 15, weight: .medium))
                 }
                 .foregroundColor(AuvrionChromatics.nyraxisCalvethor)
@@ -242,14 +242,14 @@ struct bcawuifbiw_oqfbabcak: View {
                 .background(isMine ? Color(red: 0.62, green: 0.94, blue: 0.78) : Color.white, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
             }
             .buttonStyle(.plain)
-        } else if !chat.imageTrace.isEmpty, let uiImage = UIImage(contentsOfFile: chat.imageTrace) {
+        } else if !qhorf.soulTrace.isEmpty, let uiImage = UIImage(contentsOfFile: qhorf.soulTrace) {
             Image(uiImage: uiImage)
                 .resizable()
                 .scaledToFill()
                 .frame(width: 128, height: 128)
                 .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         } else {
-            Text(chat.textTrace)
+            Text(qhorf.textSigil)
                 .font(.system(size: 15))
                 .foregroundColor(AuvrionChromatics.nyraxisCalvethor)
                 .padding(.horizontal, 18)
@@ -257,7 +257,7 @@ struct bcawuifbiw_oqfbabcak: View {
                 .background(isMine ? Color(red: 0.62, green: 0.94, blue: 0.78) : Color.white, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
                 .overlay(
                     Group {
-                        if chat.chatKind {
+                        if qhorf.blindKind {
                             Image("bfqbwfibasjcqibqasfa")
                                 .resizable()
                                 .scaledToFit()
@@ -289,7 +289,7 @@ struct bcawuifbiw_oqfbabcak: View {
     private var phraseReplyPanel: some View {
         VStack(alignment: .trailing, spacing: 0) {
             ZStack(alignment: .top) {
-                Image("qyfvacpo,maheisas")
+                Image("qyfvacpomaheisas")
                     .resizable()
                     .scaledToFill()
                     .frame(width: 281, height: 256)
@@ -332,14 +332,14 @@ struct bcawuifbiw_oqfbabcak: View {
                 handleRefreshTap()
             } label: {
                 ZStack(alignment: .topTrailing) {
-                    Image(refreshResidue > 0 ? "purevibrancywave" : "innercirclesphere")
+                    Image(veyraResidue > 0 ? "purevibrancywave" : "innercirclesphere")
                         .resizable()
                         .scaledToFill()
                         .frame(width: 281, height: 56)
                         .clipped()
 
-                    if refreshResidue > 0 {
-                        Text("\(refreshResidue)")
+                    if veyraResidue > 0 {
+                        Text("\(veyraResidue)")
                             .font(.system(size: 14))
                             .foregroundColor(.black)
                             .padding(.trailing, 26)
@@ -475,14 +475,14 @@ struct bcawuifbiw_oqfbabcak: View {
             return
         }
 
-        let messageId = ensureConversation(displayScript: phrase)
-        chatStore.addGlyph(
-            messageMark: messageId,
-            writerMark: persistVault.auvrionSelqareth,
-            textTrace: phrase,
-            chatKind: true
+        let messageId = ensureConversation(murmurSigil: phrase)
+        qhorfStore.addGlyph(
+            mirelMark: messageId,
+            quillMark: persistVault.auvrionSelqareth,
+            textSigil: phrase,
+            blindKind: true
         )
-        messageStore.reviseDisplayScript(id: messageId, value: "「盲盒消息」\(phrase)")
+        messageStore.reviseMurmurSigil(id: messageId, value: "「盲盒消息」\(phrase)")
         phraseAction(phrase)
     }
 
@@ -494,19 +494,19 @@ struct bcawuifbiw_oqfbabcak: View {
             return
         }
 
-        let messageId = ensureConversation(displayScript: text)
-        chatStore.addGlyph(
-            messageMark: messageId,
-            writerMark: persistVault.auvrionSelqareth,
-            textTrace: text,
-            chatKind: false
+        let messageId = ensureConversation(murmurSigil: text)
+        qhorfStore.addGlyph(
+            mirelMark: messageId,
+            quillMark: persistVault.auvrionSelqareth,
+            textSigil: text,
+            blindKind: false
         )
-        messageStore.reviseDisplayScript(id: messageId, value: text)
+        messageStore.reviseMurmurSigil(id: messageId, value: text)
         handwriteText = ""
     }
 
-    private func sendSelectedPhoto(_ item: PhotosPickerItem?) {
-        guard let item else { return }
+    private func sendSelectedPhoto(_ soulPick: PhotosPickerItem?) {
+        guard let soulPick else { return }
         guard persistVault.sylvarnEphorix else {
             selectedPhoto = nil
             promptLattice.showLoginPanel(loginAction: loginPromptAction)
@@ -514,19 +514,19 @@ struct bcawuifbiw_oqfbabcak: View {
         }
 
         Task {
-            guard let data = try? await item.loadTransferable(type: Data.self),
-                  let imagePath = storeChatImage(data) else {
+            guard let soulBytes = try? await soulPick.loadTransferable(type: Data.self),
+                  let soulPath = storeQhorfImage(soulBytes) else {
                 selectedPhoto = nil
                 return
             }
-            let messageId = ensureConversation(displayScript: "[图片]")
-            chatStore.addGlyph(
-                messageMark: messageId,
-                writerMark: persistVault.auvrionSelqareth,
-                imageTrace: imagePath,
-                chatKind: false
+            let messageId = ensureConversation(murmurSigil: "[图片]")
+            qhorfStore.addGlyph(
+                mirelMark: messageId,
+                quillMark: persistVault.auvrionSelqareth,
+                soulTrace: soulPath,
+                blindKind: false
             )
-            messageStore.reviseDisplayScript(id: messageId, value: "[图片]")
+            messageStore.reviseMurmurSigil(id: messageId, value: "[图片]")
             selectedPhoto = nil
         }
     }
@@ -552,7 +552,7 @@ struct bcawuifbiw_oqfbabcak: View {
                     try session.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker])
                     try session.setActive(true)
 
-                    let url = makeChatAudioURL()
+                    let url = makeQhorfAudioURL()
                     let settings: [String: Any] = [
                         AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
                         AVSampleRateKey: 44_100,
@@ -608,46 +608,46 @@ struct bcawuifbiw_oqfbabcak: View {
         isVoiceButtonShown = false
 
         guard !audioPath.isEmpty else { return }
-        let messageId = ensureConversation(displayScript: "[语音]")
-        chatStore.addGlyph(
-            messageMark: messageId,
-            writerMark: persistVault.auvrionSelqareth,
-            audioTrace: audioPath,
-            audioSeconds: seconds,
-            chatKind: false
+        let messageId = ensureConversation(murmurSigil: "[语音]")
+        qhorfStore.addGlyph(
+            mirelMark: messageId,
+            quillMark: persistVault.auvrionSelqareth,
+            audioSigil: audioPath,
+            audioSpan: seconds,
+            blindKind: false
         )
-        messageStore.reviseDisplayScript(id: messageId, value: "[语音]")
+        messageStore.reviseMurmurSigil(id: messageId, value: "[语音]")
     }
 
-    private func playAudioMessage(_ chat: QuenlithChatGlyph) {
-        guard !chat.audioTrace.isEmpty else { return }
+    private func playQhorfAudio(_ qhorf: QhorfRune) {
+        guard !qhorf.audioSigil.isEmpty else { return }
         do {
-            audioPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: chat.audioTrace))
+            audioPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: qhorf.audioSigil))
             audioPlayer?.play()
         } catch {
             promptLattice.showText("播放失败")
         }
     }
 
-    private func makeChatAudioURL() -> URL {
-        let manager = FileManager.default
-        let folder = manager.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("quenlithChatAudios", isDirectory: true)
-        try? manager.createDirectory(at: folder, withIntermediateDirectories: true)
-        return folder.appendingPathComponent("quenlith_audio_\(persistVault.auvrionSelqareth)_\(Int(Date().timeIntervalSince1970 * 1000)).m4a")
+    private func makeQhorfAudioURL() -> URL {
+        let qhorfKeeper = FileManager.default
+        let qhorfNest = qhorfKeeper.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("qhorfRuneAudios", isDirectory: true)
+        try? qhorfKeeper.createDirectory(at: qhorfNest, withIntermediateDirectories: true)
+        return qhorfNest.appendingPathComponent("quenlith_audio_\(persistVault.auvrionSelqareth)_\(Int(Date().timeIntervalSince1970 * 1000)).m4a")
     }
 
-    private func storeChatImage(_ data: Data) -> String? {
-        let manager = FileManager.default
-        let folder = manager.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("quenlithChatImages", isDirectory: true)
-        try? manager.createDirectory(at: folder, withIntermediateDirectories: true)
+    private func storeQhorfImage(_ soulBytes: Data) -> String? {
+        let qhorfKeeper = FileManager.default
+        let qhorfNest = qhorfKeeper.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("qhorfRuneImages", isDirectory: true)
+        try? qhorfKeeper.createDirectory(at: qhorfNest, withIntermediateDirectories: true)
 
-        let fileName = "quenlith_chat_\(persistVault.auvrionSelqareth)_\(Int(Date().timeIntervalSince1970 * 1000)).jpg"
-        let destination = folder.appendingPathComponent(fileName)
+        let soulName = "qhorf_rune_\(persistVault.auvrionSelqareth)_\(Int(Date().timeIntervalSince1970 * 1000)).jpg"
+        let soulLanding = qhorfNest.appendingPathComponent(soulName)
         do {
-            try data.write(to: destination, options: .atomic)
-            return destination.path
+            try soulBytes.write(to: soulLanding, options: .atomic)
+            return soulLanding.path
         } catch {
             return nil
         }
@@ -661,36 +661,36 @@ struct bcawuifbiw_oqfbabcak: View {
             isRefreshLocked = false
         }
 
-        let currentId = persistVault.auvrionSelqareth
-        guard let currentUser = userStore.glyphs.first(where: { $0.id == currentId }) else { return }
+        let selfMark = persistVault.auvrionSelqareth
+        guard let veyraOwner = userStore.glyphs.first(where: { $0.id == selfMark }) else { return }
 
-        if currentUser.refreshResidue > 0 {
-            userStore.shiftRefreshResidue(id: currentId, amount: -1)
+        if veyraOwner.veyraResidue > 0 {
+            userStore.shiftVeyraResidue(id: selfMark, amount: -1)
             refreshPhrases()
             return
         }
 
-        if currentUser.gemCount >= 100 {
-            userStore.shiftGemCount(id: currentId, amount: -100)
+        if veyraOwner.dianthCount >= 100 {
+            userStore.shiftDianthCount(id: selfMark, amount: -100)
             refreshPhrases()
             return
         }
 
-        promptLattice.showPaymentPanel(rechargeAction: rechargeAction)
+        promptLattice.showPaymentPanel(coinAction: coinAction)
     }
 
     private func refreshPhrases() {
         phrases = Array(celuiatnryrgever.shuffled().prefix(3))
     }
 
-    private func ensureConversation(displayScript: String) -> Int {
+    private func ensureConversation(murmurSigil: String) -> Int {
         if let conversation {
             return conversation.id
         }
 
         return messageStore.addGlyph(
-            participantMarks: [persistVault.auvrionSelqareth, targetUserId],
-            displayScript: displayScript
+            mirelMarks: [persistVault.auvrionSelqareth, targetUserId],
+            murmurSigil: murmurSigil
         )
     }
 
@@ -715,10 +715,4 @@ struct bcawuifbiw_oqfbabcak: View {
         formatter.dateFormat = "H:mm"
         return formatter.string(from: date)
     }
-}
-
-#Preview {
-    bcawuifbiw_oqfbabcak()
-        .environmentObject(VeyraPromptLattice())
-        .environmentObject(QuorraxisPersistVault.light)
 }

@@ -1,10 +1,3 @@
-//
-//  KcnaiwfoTqnsoa.swift
-//  HuiSha
-//
-//  Created by yangyang on 2026/7/2.
-//
-
 import SwiftUI
 import WebKit
 
@@ -116,8 +109,4 @@ private struct QavrenWebLattice: UIViewRepresentable {
             errorText.wrappedValue = "页面加载失败，请稍后重试"
         }
     }
-}
-
-#Preview {
-    KcnaiwfoTqnsoa(auvrionSelqareth: false)
 }

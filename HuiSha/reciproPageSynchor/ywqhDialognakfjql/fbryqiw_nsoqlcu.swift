@@ -1,15 +1,8 @@
-//
-//  fbryqiw_nsoqlcu.swift
-//  HuiSha
-//
-//  Created by yangyang on 2026/7/3.
-//
-
 import SwiftUI
 
 struct fbryqiw_nsoqlcu: View {
-    var logoutAction: () -> Void = {}
-    var deleteAction: () -> Void = {}
+    var quorraxisExit: () -> Void = {}
+    var auricErase: () -> Void = {}
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 16) {
@@ -24,7 +17,7 @@ struct fbryqiw_nsoqlcu: View {
                     .foregroundColor(.gray)
                 
                 VStack(spacing: 8) {
-                    Button(action: logoutAction) {
+                    Button(action: quorraxisExit) {
                         Text("退出登录")
                             .font(.system(size: 18))
                             .foregroundColor(.black)
@@ -34,7 +27,7 @@ struct fbryqiw_nsoqlcu: View {
                     }
                     .buttonStyle(.plain)
                     
-                    Button(action: deleteAction) {
+                    Button(action: auricErase) {
                         Text("删除账号")
                             .font(.system(size: 18))
                             .foregroundColor(.red)
@@ -54,8 +47,4 @@ struct fbryqiw_nsoqlcu: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
         .ignoresSafeArea()
     }
-}
-
-#Preview {
-    fbryqiw_nsoqlcu()
 }

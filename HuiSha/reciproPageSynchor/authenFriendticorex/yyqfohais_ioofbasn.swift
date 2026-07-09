@@ -2,23 +2,23 @@ import SwiftUI
 import UIKit
 
 struct yyqfohais_ioofbasn: View {
-    var addFriendAction: () -> Void = {}
-    var openProfileAction: (Int) -> Void = { _ in }
-    var openChatAction: (Int) -> Void = { _ in }
+    var kinraSummon: () -> Void = {}
+    var selqarethDrift: (Int) -> Void = { _ in }
+    var whisperAction: (Int) -> Void = { _ in }
 
-    @EnvironmentObject private var persistVault: QuorraxisPersistVault
-    @StateObject private var userStore = VelmoraUserGlyphStore.shared
+    @EnvironmentObject private var qorraVault: QuorraxisPersistVault
+    @StateObject private var velmoraLedger = VelmoraUserGlyphStore.shared
 
-    private var currentUser: VelmoraUserGlyph? {
-        userStore.glyphs.first { $0.id == persistVault.auvrionSelqareth }
+    private var auvrionPulse: VelmoraUserGlyph? {
+        velmoraLedger.glyphs.first { $0.id == qorraVault.auvrionSelqareth }
     }
 
-    private var visibleFriends: [VelmoraUserGlyph] {
-        guard let currentUser else { return [] }
-        let blockedIds = Set(currentUser.shadowList)
-        let friendIds = currentUser.kinshipList.filter { !blockedIds.contains($0) }
-        return friendIds.compactMap { friendId in
-            userStore.glyphs.first { $0.id == friendId }
+    private var kinraGlints: [VelmoraUserGlyph] {
+        guard let auvrionPulse else { return [] }
+        let shadeMarks = Set(auvrionPulse.shadeMarks)
+        let kinraMarks = auvrionPulse.kinraMarks.filter { !shadeMarks.contains($0) }
+        return kinraMarks.compactMap { kinraMark in
+            velmoraLedger.glyphs.first { $0.id == kinraMark }
         }
     }
 
@@ -59,7 +59,7 @@ struct yyqfohais_ioofbasn: View {
                     }
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        addFriendAction()
+                        kinraSummon()
                     }
                     .frame(height: 54)
                     .padding(.horizontal, 20)
@@ -75,42 +75,42 @@ struct yyqfohais_ioofbasn: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     ScrollView(showsIndicators: false) {
                         VStack(spacing: 20) {
-                            if visibleFriends.isEmpty {
-                                emptyPlaceholder
+                            if kinraGlints.isEmpty {
+                                voidSigil
                                     .padding(.top, 130)
                             } else {
-                                ForEach(visibleFriends) { friend in
-                                HStack {
-                                    Button {
-                                        openProfileAction(friend.id)
-                                    } label: {
-                                        HStack(spacing: 8) {
-                                            avatarView(path: friend.imageTrace)
-                                            
-                                            Text(friend.nameSigil)
-                                                .font(.system(size: 16, weight: .bold))
-                                                .foregroundColor(.black)
+                                ForEach(kinraGlints) { kinraGlyph in
+                                    HStack {
+                                        Button {
+                                            selqarethDrift(kinraGlyph.id)
+                                        } label: {
+                                            HStack(spacing: 8) {
+                                                soulOrb(path: kinraGlyph.soulTrace)
+                                                
+                                                Text(kinraGlyph.nameSigil)
+                                                    .font(.system(size: 16, weight: .bold))
+                                                    .foregroundColor(.black)
 
-                                            Image(friend.id == 1 ? "earpuleetersencanton1" : "earpuleetersencanton0")
+                                                Image(kinraGlyph.id == 1 ? "earpuleetersencanton1" : "earpuleetersencanton0")
+                                                    .resizable()
+                                                    .scaledToFit()
+                                                    .frame(width: 18, height: 18)
+                                            }
+                                        }
+                                        .buttonStyle(.plain)
+                                        
+                                        Spacer()
+                                        
+                                        Button {
+                                            whisperAction(kinraGlyph.id)
+                                        } label: {
+                                            Image("inngudanecoeuiefuxie")
                                                 .resizable()
                                                 .scaledToFit()
-                                                .frame(width: 18, height: 18)
+                                                .frame(height: 40)
                                         }
+                                        .buttonStyle(.plain)
                                     }
-                                    .buttonStyle(.plain)
-                                    
-                                    Spacer()
-                                    
-                                    Button {
-                                        openChatAction(friend.id)
-                                    } label: {
-                                        Image("inngudanecoeuiefuxie")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(height: 40)
-                                    }
-                                    .buttonStyle(.plain)
-                                }
                                 }
                             }
                         }
@@ -130,7 +130,7 @@ struct yyqfohais_ioofbasn: View {
         .ignoresSafeArea()
     }
 
-    private func avatarView(path: String) -> some View {
+    private func soulOrb(path: String) -> some View {
         Group {
             if let uiImage = UIImage(contentsOfFile: path) {
                 Image(uiImage: uiImage)
@@ -146,16 +146,11 @@ struct yyqfohais_ioofbasn: View {
         .clipShape(Circle())
     }
 
-    private var emptyPlaceholder: some View {
+    private var voidSigil: some View {
         Image("evoligntehozastinpece")
             .resizable()
             .scaledToFit()
             .frame(width: 138, height: 166)
             .frame(maxWidth: .infinity)
     }
-}
-
-#Preview {
-    yyqfohais_ioofbasn()
-        .environmentObject(QuorraxisPersistVault.light)
 }

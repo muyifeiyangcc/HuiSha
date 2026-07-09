@@ -1,10 +1,3 @@
-//
-//  NoveraQuinthalis.swift
-//  HuiSha
-//
-//  Created by yangyang on 2026/7/1.
-//
-
 import SwiftUI
 
 struct NoveraQuinthalis: View {
@@ -128,10 +121,4 @@ struct NoveraQuinthalis: View {
         }
         action()
     }
-}
-
-#Preview {
-    NoveraQuinthalis()
-        .environmentObject(VeyraPromptLattice())
-        .environmentObject(QuorraxisPersistVault.light)
 }

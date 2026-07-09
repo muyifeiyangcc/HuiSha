@@ -16,7 +16,7 @@ final class VeyraPromptLattice: ObservableObject {
     private var loginPromptAction: (() -> Void)?
     private var eulaCancelAction: (() -> Void)?
     private var eulaAgreeAction: (() -> Void)?
-    private var rechargeAction: (() -> Void)?
+    private var coinAction: (() -> Void)?
 
     func showLoading(_ text: String = "加载中") {
         dismissTask?.cancel()
@@ -174,7 +174,7 @@ final class VeyraPromptLattice: ObservableObject {
         veil = .eulaPanel
     }
 
-    func showPaymentPanel(rechargeAction: (() -> Void)? = nil) {
+    func showPaymentPanel(coinAction: (() -> Void)? = nil) {
         dismissTask?.cancel()
         panelTargetId = 0
         reportAction = nil
@@ -185,7 +185,7 @@ final class VeyraPromptLattice: ObservableObject {
         loginPromptAction = nil
         eulaCancelAction = nil
         eulaAgreeAction = nil
-        self.rechargeAction = rechargeAction
+        self.coinAction = coinAction
         eulaIsLoading = false
         veil = .paymentPanel
     }
@@ -261,8 +261,8 @@ final class VeyraPromptLattice: ObservableObject {
         }
     }
 
-    func performRechargeAction() {
-        let action = rechargeAction
+    func runCoinAction() {
+        let action = coinAction
         dismiss()
         action?()
     }
@@ -278,7 +278,7 @@ final class VeyraPromptLattice: ObservableObject {
         loginPromptAction = nil
         eulaCancelAction = nil
         eulaAgreeAction = nil
-        rechargeAction = nil
+        coinAction = nil
         eulaIsLoading = false
         veil = nil
     }
@@ -361,34 +361,34 @@ struct VeyraPromptCurtain: View {
 
         case .morePanel:
             njaueiqb_zzneefja(
-                targetId: lattice.panelTargetId,
-                reportAction: {
+                mirelMark: lattice.panelTargetId,
+                virelonCast: {
                     lattice.performReportAction()
                 },
-                blockAction: {
+                shadowCast: {
                     lattice.performBlockAction()
                 },
-                deleteAction: {
+                severCast: {
                     lattice.performDeleteRelationAction()
                 }
             )
 
         case .accountPanel:
             fbryqiw_nsoqlcu(
-                logoutAction: {
+                quorraxisExit: {
                     lattice.performAccountLogoutAction()
                 },
-                deleteAction: {
+                auricErase: {
                     lattice.performAccountDeleteAction()
                 }
             )
 
         case .loginPanel:
             ufblkdhi_vzkaywq(
-                cancelAction: {
+                veilFold: {
                     lattice.dismiss()
                 },
-                loginAction: {
+                caldrisCast: {
                     lattice.performLoginPromptAction()
                 }
             )
@@ -396,10 +396,10 @@ struct VeyraPromptCurtain: View {
         case .eulaPanel:
             ZStack {
                 tejvkown_pwenvsv(
-                    cancelAction: {
+                    vellumDeny: {
                         lattice.performEulaCancelAction()
                     },
-                    agreeAction: {
+                    asterBind: {
                         lattice.performEulaAgreeAction()
                     }
                 )
@@ -412,11 +412,11 @@ struct VeyraPromptCurtain: View {
 
         case .paymentPanel:
             tbiomvy_qwubcsafw(
-                cancelAction: {
+                veilFold: {
                     lattice.dismiss()
                 },
-                rechargeAction: {
-                    lattice.performRechargeAction()
+                velorCast: {
+                    lattice.runCoinAction()
                 }
             )
         }

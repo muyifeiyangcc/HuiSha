@@ -1,15 +1,8 @@
-//
-//  ufblkdhi_vzkaywq.swift
-//  HuiSha
-//
-//  Created by yangyang on 2026/7/3.
-//
-
 import SwiftUI
 
 struct ufblkdhi_vzkaywq: View {
-    var cancelAction: () -> Void = {}
-    var loginAction: () -> Void = {}
+    var veilFold: () -> Void = {}
+    var caldrisCast: () -> Void = {}
 
     var body: some View {
         Image("uebqfbzdkpbvjbjaf")
@@ -18,7 +11,7 @@ struct ufblkdhi_vzkaywq: View {
             .frame(height: 183)
             .overlay(
                 HStack {
-                    Button(action: cancelAction) {
+                    Button(action: veilFold) {
                         Image("vbayidnaqyfzvkakfq")
                             .resizable()
                             .scaledToFit()
@@ -26,7 +19,7 @@ struct ufblkdhi_vzkaywq: View {
                     }
                     .buttonStyle(.plain)
                     
-                    Button(action: loginAction) {
+                    Button(action: caldrisCast) {
                         Image("bvhqhaufzbkjvnqi")
                             .resizable()
                             .scaledToFit()
@@ -38,8 +31,4 @@ struct ufblkdhi_vzkaywq: View {
                 alignment: .bottom
             )
     }
-}
-
-#Preview {
-    ufblkdhi_vzkaywq()
 }

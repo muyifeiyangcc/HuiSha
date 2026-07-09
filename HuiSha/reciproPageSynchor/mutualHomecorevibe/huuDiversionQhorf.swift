@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct huuDiversionQhorf: View {
-    var openChatAction: (Int) -> Void = { _ in }
+    var whisperAction: (Int) -> Void = { _ in }
     var addFriendAction: () -> Void = {}
     var openFriendProfileAction: (Int) -> Void = { _ in }
-    var rechargeAction: () -> Void = {}
+    var coinAction: () -> Void = {}
     var editProfileAction: () -> Void = {}
     var blacklistAction: () -> Void = {}
     var privacyAction: () -> Void = {}
@@ -20,13 +20,13 @@ struct huuDiversionQhorf: View {
             switch asknuejkyqqocb {
             case 1:
                 yyqfohais_ioofbasn(
-                    addFriendAction: addFriendAction,
-                    openProfileAction: openFriendProfileAction,
-                    openChatAction: openChatAction
+                    kinraSummon: addFriendAction,
+                    selqarethDrift: openFriendProfileAction,
+                    whisperAction: whisperAction
                 )
             case 2:
                 truemirsou_thmunity(
-                    rechargeAction: rechargeAction,
+                    coinAction: coinAction,
                     editProfileAction: editProfileAction,
                     blacklistAction: blacklistAction,
                     privacyAction: privacyAction,
@@ -36,7 +36,7 @@ struct huuDiversionQhorf: View {
                     loginPromptAction: loginPromptAction
                 )
             default:
-                evewone_sopakco(openChatAction: openChatAction)
+                evewone_sopakco(whisperAction: whisperAction)
             }
             
             HStack {
@@ -81,8 +81,4 @@ struct huuDiversionQhorf: View {
         }
         .ignoresSafeArea()
     }
-}
-
-#Preview {
-    huuDiversionQhorf()
 }

@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 
 struct truemirsou_thmunity: View {
-    var rechargeAction: () -> Void = {}
+    var coinAction: () -> Void = {}
     var editProfileAction: () -> Void = {}
     var blacklistAction: () -> Void = {}
     var privacyAction: () -> Void = {}
@@ -11,12 +11,12 @@ struct truemirsou_thmunity: View {
     var deleteAccountAction: () -> Void = {}
     var loginPromptAction: () -> Void = {}
 
-    @EnvironmentObject private var promptLattice: VeyraPromptLattice
-    @EnvironmentObject private var persistVault: QuorraxisPersistVault
-    @StateObject private var userStore = VelmoraUserGlyphStore.shared
+    @EnvironmentObject private var veyraVeil: VeyraPromptLattice
+    @EnvironmentObject private var qorraVault: QuorraxisPersistVault
+    @StateObject private var velmoraLedger = VelmoraUserGlyphStore.shared
 
-    private var currentUser: VelmoraUserGlyph? {
-        userStore.glyphs.first { $0.id == persistVault.auvrionSelqareth }
+    private var auvrionPulse: VelmoraUserGlyph? {
+        velmoraLedger.glyphs.first { $0.id == qorraVault.auvrionSelqareth }
     }
 
     var body: some View {
@@ -30,7 +30,7 @@ struct truemirsou_thmunity: View {
                     Spacer()
                     
                     Button {
-                        promptLattice.showAccountPanel(
+                        veyraVeil.showAccountPanel(
                             logoutAction: logoutAction,
                             deleteAction: deleteAccountAction
                         )
@@ -50,7 +50,7 @@ struct truemirsou_thmunity: View {
                     ScrollView(showsIndicators: false) {
                         VStack(spacing: 40) {
                             Button {
-                                handleRechargeTap()
+                                handleCoinTap()
                             } label: {
                                 ZStack {
                                     Image("everlastnulispareone")
@@ -58,7 +58,7 @@ struct truemirsou_thmunity: View {
                                         .scaledToFit()
                                         .frame(height: 80)
 
-                                    Text("\(currentUser?.gemCount ?? 0)")
+                                    Text("\(auvrionPulse?.dianthCount ?? 0)")
                                         .font(.system(size: 20, weight: .bold))
                                         .foregroundColor(.white)
                                         .padding(.bottom, 20)
@@ -67,10 +67,10 @@ struct truemirsou_thmunity: View {
                             .buttonStyle(.plain)
                         
                             VStack(spacing: 8) {
-                                profileItem("编辑信息", action: editProfileAction)
-                                profileItem("黑名单", action: blacklistAction)
-                                profileItem("隐私权政策", action: privacyAction)
-                                profileItem("用户协议", action: userAgreementAction)
+                                profileRune("编辑信息", cast: editProfileAction)
+                                profileRune("黑名单", cast: blacklistAction)
+                                profileRune("隐私权政策", cast: privacyAction)
+                                profileRune("用户协议", cast: userAgreementAction)
                             }
                         }
                         .padding(.vertical, 15)
@@ -86,11 +86,11 @@ struct truemirsou_thmunity: View {
             }
             
             VStack(spacing: 0) {
-                avatarView(path: currentUser?.imageTrace ?? "")
+                soulOrb(path: auvrionPulse?.soulTrace ?? "")
                     .allowsHitTesting(false)
                 
                 HStack(spacing: 12) {
-                    Text(userBadgeText)
+                    Text(mienSigil)
                         .font(.system(size: 14, weight: .medium))
                         .foregroundColor(.white)
                         .padding(.horizontal, 8)
@@ -101,11 +101,11 @@ struct truemirsou_thmunity: View {
                         )
                         .opacity(0)
                     
-                    Text(currentUser?.nameSigil ?? "未知用户")
+                    Text(auvrionPulse?.nameSigil ?? "未知用户")
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(AuvrionChromatics.nyraxisCalvethor)
 
-                    Text(userBadgeText)
+                    Text(mienSigil)
                         .font(.system(size: 14, weight: .medium))
                         .foregroundColor(.white)
                         .padding(.horizontal, 8)
@@ -118,7 +118,7 @@ struct truemirsou_thmunity: View {
                 .padding(.top, 13)
                 .padding(.bottom, 10)
                 
-                Text("ID：\(velmoraDisplayUserId(currentUser?.id ?? persistVault.auvrionSelqareth))")
+                Text("ID：\(velmoraDisplayUserId(auvrionPulse?.id ?? qorraVault.auvrionSelqareth))")
                     .font(.system(size: 17))
                     .foregroundColor(AuvrionChromatics.vellumQuorraxis)
                 
@@ -129,22 +129,22 @@ struct truemirsou_thmunity: View {
         .ignoresSafeArea()
     }
 
-    private func handleRechargeTap() {
-        guard persistVault.sylvarnEphorix else {
-            promptLattice.showLoginPanel(loginAction: loginPromptAction)
+    private func handleCoinTap() {
+        guard qorraVault.sylvarnEphorix else {
+            veyraVeil.showLoginPanel(loginAction: loginPromptAction)
             return
         }
 
-        rechargeAction()
+        coinAction()
     }
 
-    private var userBadgeText: String {
-        let gender = currentUser?.personaKind.isEmpty == false ? currentUser?.personaKind ?? "不公开" : "不公开"
-        let age = currentUser?.yearsCount ?? 18
-        return "\(gender)·\(age)"
+    private var mienSigil: String {
+        let mienGlyph = auvrionPulse?.mienKind.isEmpty == false ? auvrionPulse?.mienKind ?? "不公开" : "不公开"
+        let yearRune = auvrionPulse?.yearCount ?? 18
+        return "\(mienGlyph)·\(yearRune)"
     }
 
-    private func avatarView(path: String) -> some View {
+    private func soulOrb(path: String) -> some View {
         Group {
             if let uiImage = UIImage(contentsOfFile: path) {
                 Image(uiImage: uiImage)
@@ -160,9 +160,9 @@ struct truemirsou_thmunity: View {
         .clipShape(Circle())
     }
 
-    private func profileItem(_ title: String, action: @escaping () -> Void) -> some View {
+    private func profileRune(_ title: String, cast: @escaping () -> Void) -> some View {
         Button {
-            action()
+            cast()
         } label: {
             Text(title)
                 .font(.system(size: 18))
@@ -175,10 +175,4 @@ struct truemirsou_thmunity: View {
         }
         .buttonStyle(.plain)
     }
-}
-
-#Preview {
-    truemirsou_thmunity()
-        .environmentObject(VeyraPromptLattice())
-        .environmentObject(QuorraxisPersistVault.light)
 }

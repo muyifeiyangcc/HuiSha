@@ -2,37 +2,37 @@ import SwiftUI
 import UIKit
 
 struct evewone_sopakco: View {
-    var openChatAction: (Int) -> Void = { _ in }
+    var whisperAction: (Int) -> Void = { _ in }
 
-    @EnvironmentObject private var persistVault: QuorraxisPersistVault
-    @StateObject private var messageStore = MirelithMessageGlyphStore.shared
-    @StateObject private var userStore = VelmoraUserGlyphStore.shared
+    @EnvironmentObject private var qorraVault: QuorraxisPersistVault
+    @StateObject private var mirelithLedger = MirelithMessageGlyphStore.shared
+    @StateObject private var velmoraLedger = VelmoraUserGlyphStore.shared
 
-    @State private var veloraSearchText = ""
+    @State private var veyraNeedle = ""
 
-    private var visibleMessages: [MirelithMessageGlyph] {
-        let currentId = persistVault.auvrionSelqareth
-        let blockedIds = Set(currentUser?.shadowList ?? [])
-        let keyword = veloraSearchText.trimmingCharacters(in: .whitespacesAndNewlines)
+    private var murmurThreads: [MirelithMessageGlyph] {
+        let selfMark = qorraVault.auvrionSelqareth
+        let shadeMarks = Set(auvrionPulse?.shadeMarks ?? [])
+        let lumenNeedle = veyraNeedle.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        return messageStore.glyphs
-            .filter { message in
-                message.participantMarks.contains(currentId)
+        return mirelithLedger.glyphs
+            .filter { threadGlyph in
+                threadGlyph.mirelMarks.contains(selfMark)
             }
-            .filter { message in
-                blockedIds.isDisjoint(with: Set(message.participantMarks))
+            .filter { threadGlyph in
+                shadeMarks.isDisjoint(with: Set(threadGlyph.mirelMarks))
             }
-            .filter { message in
-                guard !keyword.isEmpty else { return true }
-                let partner = partnerUser(for: message, currentId: currentId)
-                return message.displayScript.localizedCaseInsensitiveContains(keyword)
-                    || (partner?.nameSigil.localizedCaseInsensitiveContains(keyword) ?? false)
+            .filter { threadGlyph in
+                guard !lumenNeedle.isEmpty else { return true }
+                let veyraMate = mateGlyph(for: threadGlyph, selfMark: selfMark)
+                return threadGlyph.murmurSigil.localizedCaseInsensitiveContains(lumenNeedle)
+                    || (veyraMate?.nameSigil.localizedCaseInsensitiveContains(lumenNeedle) ?? false)
             }
-            .sorted { $0.timeTrace > $1.timeTrace }
+            .sorted { $0.timeSigil > $1.timeSigil }
     }
 
-    private var currentUser: VelmoraUserGlyph? {
-        userStore.glyphs.first { $0.id == persistVault.auvrionSelqareth }
+    private var auvrionPulse: VelmoraUserGlyph? {
+        velmoraLedger.glyphs.first { $0.id == qorraVault.auvrionSelqareth }
     }
 
     var body: some View {
@@ -55,7 +55,7 @@ struct evewone_sopakco: View {
                         .frame(height: 33)
                     
                     HStack(spacing: 10) {
-                        TextField("搜索昵称或聊天记录", text: $veloraSearchText)
+                        TextField("搜索昵称或聊天记录", text: $veyraNeedle)
                             .font(.system(size: 17, weight: .regular))
                             .foregroundColor(AuvrionChromatics.nyraxisCalvethor)
                             .textInputAutocapitalization(.never)
@@ -85,20 +85,20 @@ struct evewone_sopakco: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     ScrollView(showsIndicators: false) {
                         VStack(spacing: 20) {
-                            if visibleMessages.isEmpty {
-                                emptyPlaceholder
+                            if murmurThreads.isEmpty {
+                                voidSigil
                                     .padding(.top, 130)
                             } else {
-                                ForEach(visibleMessages) { message in
-                                Button {
-                                    if let partnerId = partnerId(for: message, currentId: persistVault.auvrionSelqareth) {
-                                        openChatAction(partnerId)
+                                ForEach(murmurThreads) { threadGlyph in
+                                    Button {
+                                        if let mateMark = mateMark(for: threadGlyph, selfMark: qorraVault.auvrionSelqareth) {
+                                            whisperAction(mateMark)
+                                        }
+                                    } label: {
+                                        threadRune(threadGlyph)
+                                            .contentShape(Rectangle())
                                     }
-                                } label: {
-                                    messageRow(message)
-                                        .contentShape(Rectangle())
-                                }
-                                .buttonStyle(.plain)
+                                    .buttonStyle(.plain)
                                 }
                             }
                         }
@@ -119,26 +119,26 @@ struct evewone_sopakco: View {
         .dismissKeyboardOnOutsideTap()
     }
 
-    private func messageRow(_ message: MirelithMessageGlyph) -> some View {
-        let partner = partnerUser(for: message, currentId: persistVault.auvrionSelqareth)
+    private func threadRune(_ threadGlyph: MirelithMessageGlyph) -> some View {
+        let veyraMate = mateGlyph(for: threadGlyph, selfMark: qorraVault.auvrionSelqareth)
 
         return HStack {
-            avatarView(path: partner?.imageTrace ?? "")
+            soulOrb(path: veyraMate?.soulTrace ?? "")
                 .allowsHitTesting(false)
 
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
-                    Text(partner?.nameSigil ?? "未知用户")
+                    Text(veyraMate?.nameSigil ?? "未知用户")
                         .font(.system(size: 16, weight: .bold))
                         .foregroundColor(.black)
                         .frame(maxWidth: .infinity, alignment: .leading)
 
-                    Text(timeText(message.timeTrace))
+                    Text(timeSigil(threadGlyph.timeSigil))
                         .font(.system(size: 12))
                         .foregroundColor(.gray)
                 }
 
-                Text(message.displayScript)
+                Text(threadGlyph.murmurSigil)
                     .font(.system(size: 14))
                     .foregroundColor(.gray)
                     .lineLimit(1)
@@ -146,17 +146,17 @@ struct evewone_sopakco: View {
         }
     }
 
-    private func partnerUser(for message: MirelithMessageGlyph, currentId: Int) -> VelmoraUserGlyph? {
-        let partnerId = partnerId(for: message, currentId: currentId)
-        guard let partnerId else { return nil }
-        return userStore.glyphs.first { $0.id == partnerId }
+    private func mateGlyph(for threadGlyph: MirelithMessageGlyph, selfMark: Int) -> VelmoraUserGlyph? {
+        let mateMark = mateMark(for: threadGlyph, selfMark: selfMark)
+        guard let mateMark else { return nil }
+        return velmoraLedger.glyphs.first { $0.id == mateMark }
     }
 
-    private func partnerId(for message: MirelithMessageGlyph, currentId: Int) -> Int? {
-        message.participantMarks.first { $0 != currentId }
+    private func mateMark(for threadGlyph: MirelithMessageGlyph, selfMark: Int) -> Int? {
+        threadGlyph.mirelMarks.first { $0 != selfMark }
     }
 
-    private func avatarView(path: String) -> some View {
+    private func soulOrb(path: String) -> some View {
         Group {
             if let uiImage = UIImage(contentsOfFile: path) {
                 Image(uiImage: uiImage)
@@ -172,22 +172,17 @@ struct evewone_sopakco: View {
         .clipShape(Circle())
     }
 
-    private func timeText(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "H:mm"
-        return formatter.string(from: date)
+    private func timeSigil(_ auricDate: Date) -> String {
+        let chronFormatter = DateFormatter()
+        chronFormatter.dateFormat = "H:mm"
+        return chronFormatter.string(from: auricDate)
     }
 
-    private var emptyPlaceholder: some View {
+    private var voidSigil: some View {
         Image("evoligntehozastinpece")
             .resizable()
             .scaledToFit()
             .frame(width: 138, height: 166)
             .frame(maxWidth: .infinity)
     }
-}
-
-#Preview {
-    evewone_sopakco()
-        .environmentObject(QuorraxisPersistVault.light)
 }

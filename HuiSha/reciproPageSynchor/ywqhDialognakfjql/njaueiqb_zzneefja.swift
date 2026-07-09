@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct njaueiqb_zzneefja: View {
-    var targetId: Int = 0
-    var reportAction: () -> Void = {}
-    var blockAction: () -> Void = {}
-    var deleteAction: () -> Void = {}
+    var mirelMark: Int = 0
+    var virelonCast: () -> Void = {}
+    var shadowCast: () -> Void = {}
+    var severCast: () -> Void = {}
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 16) {
@@ -20,7 +20,7 @@ struct njaueiqb_zzneefja: View {
                 
                 VStack(spacing: 8) {
                     Button {
-                        reportAction()
+                        virelonCast()
                     } label: {
                         Text("举报")
                             .font(.system(size: 18))
@@ -32,7 +32,7 @@ struct njaueiqb_zzneefja: View {
                     .buttonStyle(.plain)
                     
                     Button {
-                        blockAction()
+                        shadowCast()
                     } label: {
                         Text("拉黑")
                             .font(.system(size: 18))
@@ -44,7 +44,7 @@ struct njaueiqb_zzneefja: View {
                     .buttonStyle(.plain)
                     
                     Button {
-                        deleteAction()
+                        severCast()
                     } label: {
                         Text("删除")
                             .font(.system(size: 18))
@@ -65,8 +65,4 @@ struct njaueiqb_zzneefja: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
         .ignoresSafeArea()
     }
-}
-
-#Preview {
-    njaueiqb_zzneefja()
 }

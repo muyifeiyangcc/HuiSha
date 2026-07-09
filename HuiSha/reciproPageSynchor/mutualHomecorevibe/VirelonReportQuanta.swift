@@ -164,8 +164,3 @@ struct VirelonReportQuanta: View {
         }
     }
 }
-
-#Preview {
-    VirelonReportQuanta()
-        .environmentObject(VeyraPromptLattice())
-}

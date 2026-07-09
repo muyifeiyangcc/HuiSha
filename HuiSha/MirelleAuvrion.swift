@@ -1,251 +1,245 @@
 import SwiftUI
 
 struct MirelleAuvrion: View {
-    @EnvironmentObject private var persistVault: QuorraxisPersistVault
-    @State private var path: [AuvrionPage] = []
-    @StateObject private var promptLattice = VeyraPromptLattice()
-    @StateObject private var userStore = VelmoraUserGlyphStore.shared
+    @EnvironmentObject private var quorraxisVault: QuorraxisPersistVault
+    @State private var auricTrail: [AuvrionPage] = []
+    @StateObject private var veyraCurtain = VeyraPromptLattice()
+    @StateObject private var velmoraLedger = VelmoraUserGlyphStore.shared
 
     var body: some View {
         ZStack {
-            NavigationStack(path: $path) {
-                rootView()
+            NavigationStack(path: $auricTrail) {
+                mirelleRoot()
                 .navigationBarBackButtonHidden(true)
-                .navigationDestination(for: AuvrionPage.self) { page in
-                    pageView(page)
+                .navigationDestination(for: AuvrionPage.self) { auricPage in
+                    auricScene(auricPage)
                         .navigationBarBackButtonHidden(true)
                 }
             }
             
-            VeyraPromptCurtain(lattice: promptLattice)
+            VeyraPromptCurtain(lattice: veyraCurtain)
         }
-        .environmentObject(promptLattice)
+        .environmentObject(veyraCurtain)
         .ignoresSafeArea()
     }
 
     @ViewBuilder
-    private func rootView() -> some View {
-        if persistVault.nyraxisCalvethor {
-            homeView()
+    private func mirelleRoot() -> some View {
+        if quorraxisVault.nyraxisCalvethor {
+            qhorfNest()
         } else {
             NoveraQuinthalis(
-                auvrionSelqareth: push(.login),
+                auvrionSelqareth: cast(.caldrisGate),
                 quorraxisMirelle: enterAsGuest,
-                velnoraQuithen: { path.append(.accord($0)) }
+                velnoraQuithen: { auricTrail.append(.kcnaiAccord($0)) }
             )
         }
     }
 
     @ViewBuilder
-    private func pageView(_ page: AuvrionPage) -> some View {
-        switch page {
-        case .login:
+    private func auricScene(_ auricPage: AuvrionPage) -> some View {
+        switch auricPage {
+        case .caldrisGate:
             CaldrisVeyonneth(
-                backAction: pop(),
-                forgotAction: push(.reset),
-                registerAction: push(.register),
-                submitAction: reset()
+                backAction: retreat(),
+                forgotAction: cast(.sylvarnReset),
+                registerAction: cast(.seravynJoin),
+                submitAction: clearTrail()
             )
-        case .home:
-            homeView()
-        case .recharge:
+        case .huishaHome:
+            qhorfNest()
+        case .velorCoin:
             VelorDintRcare(
-                backAction: pop()
+                backAction: retreat()
             )
-        case .editProfile:
+        case .auvrionEdit:
             AuvrionSelqarethProfile(
-                backAction: pop(),
-                submitAction: pop(),
+                backAction: retreat(),
+                submitAction: retreat(),
                 loginPromptAction: resetSession
             )
-        case .blacklist:
+        case .shadeMarks:
             MevericoNulistora(
-                backAction: pop()
+                backAction: retreat()
             )
-        case .addFriend:
-            QorvaneLumisAdd(
-                backAction: pop(),
-                profileAction: { path.append(.record($0)) },
-                loginPromptAction: resetSession
+        case .kinshipAdd:
+            QorvaneLumisVey(
+                lumisRetreat: retreat(),
+                selqarethDrift: { auricTrail.append(.selqarethCard($0)) },
+                sylPrompt: resetSession
             )
-        case .chat(let targetUserId):
+        case .qhorfWhisper(let qhorfMark):
             bcawuifbiw_oqfbabcak(
-                targetUserId: targetUserId,
-                backAction: pop(),
-                reportAction: push(.report),
-                blockAction: blockTargetAndReturnHome,
-                deleteAction: deleteTargetFriendAndReturnHome,
+                targetUserId: qhorfMark,
+                backAction: retreat(),
+                reportAction: cast(.virelonFlag),
+                blockAction: shadowAndHome,
+                deleteAction: severKinraAndHome,
                 loginPromptAction: resetSession,
-                profileAction: push(.record(targetUserId)),
-                rechargeAction: push(.recharge)
+                profileAction: cast(.selqarethCard(qhorfMark)),
+                coinAction: cast(.velorCoin)
             )
-        case .report:
+        case .virelonFlag:
             VirelonReportQuanta(
-                backAction: pop(),
+                backAction: retreat(),
                 submitAction: { _ in
-                    pop()()
+                    retreat()()
                 }
             )
-        case .record(let auvrionSelqareth):
+        case .selqarethCard(let auvrionSelqareth):
             uoqnfbajse_qbvjvsnoen(
                 auvrionSelqareth: auvrionSelqareth,
-                backAction: pop(),
-                reportAction: push(.report),
-                blockAction: blockTargetAndReturnHome,
-                deleteAction: deleteTargetFriendAndReturnHome,
-                chatAction: { path.append(.chat(auvrionSelqareth)) },
+                backAction: retreat(),
+                reportAction: cast(.virelonFlag),
+                blockAction: shadowAndHome,
+                deleteAction: severKinraAndHome,
+                whisperAction: { auricTrail.append(.qhorfWhisper(auvrionSelqareth)) },
                 loginPromptAction: resetSession
             )
-        case .register:
+        case .seravynJoin:
             SeravynQuellorix(
-                backAction: pop(),
-                submitAction: { nickname, email, password in
-                    path.append(.profile(SelqarethRegisterDraft(nickname: nickname, email: email, password: password)))
+                backAction: retreat(),
+                submitAction: { auricName, auricMail, auricCipher in
+                    auricTrail.append(.selqarethForm(SelqarethRegisterDraft(auricName: auricName, auricMail: auricMail, auricCipher: auricCipher)))
                 }
             )
-        case .reset:
+        case .sylvarnReset:
             SylvarnEphorixReset(
-                backAction: pop(),
-                submitAction: pop()
+                backAction: retreat(),
+                submitAction: retreat()
             )
-        case .profile(let registerDraft):
+        case .selqarethForm(let registerDraft):
             AuvrionSelqarethProfile(
-                registerDraft: registerDraft,
-                backAction: pop(),
-                submitAction: reset()
+                selqarethDraft: registerDraft,
+                backAction: retreat(),
+                submitAction: clearTrail()
             )
-        case .accord(let auvrionSelqareth):
+        case .kcnaiAccord(let auvrionSelqareth):
             KcnaiwfoTqnsoa(
                 auvrionSelqareth: auvrionSelqareth,
-                backAction: pop()
+                backAction: retreat()
             )
         }
     }
 
-    private func homeView() -> some View {
-            huuDiversionQhorf(
-                openChatAction: { path.append(.chat($0)) },
-                addFriendAction: push(.addFriend),
-                openFriendProfileAction: { path.append(.record($0)) },
-                rechargeAction: push(.recharge),
-            editProfileAction: push(.editProfile),
-            blacklistAction: push(.blacklist),
-            privacyAction: { path.append(.accord(false)) },
-            userAgreementAction: { path.append(.accord(true)) },
+    private func qhorfNest() -> some View {
+        huuDiversionQhorf(
+            whisperAction: { auricTrail.append(.qhorfWhisper($0)) },
+            addFriendAction: cast(.kinshipAdd),
+            openFriendProfileAction: { auricTrail.append(.selqarethCard($0)) },
+            coinAction: cast(.velorCoin),
+            editProfileAction: cast(.auvrionEdit),
+            blacklistAction: cast(.shadeMarks),
+            privacyAction: { auricTrail.append(.kcnaiAccord(false)) },
+            userAgreementAction: { auricTrail.append(.kcnaiAccord(true)) },
             logoutAction: resetSession,
             deleteAccountAction: deleteAccountAndReset,
             loginPromptAction: resetSession
         )
     }
 
-    private func push(_ next: AuvrionPage) -> () -> Void {
+    private func cast(_ nextRune: AuvrionPage) -> () -> Void {
         {
-            path.append(next)
+            auricTrail.append(nextRune)
         }
     }
 
-    private func pop() -> () -> Void {
+    private func retreat() -> () -> Void {
         {
-            guard !path.isEmpty else { return }
-            path.removeLast()
+            guard !auricTrail.isEmpty else { return }
+            auricTrail.removeLast()
         }
     }
 
-    private func reset() -> () -> Void {
+    private func clearTrail() -> () -> Void {
         {
-            path.removeAll()
-        }
-    }
-
-    private func showLoading(then action: @escaping () -> Void) -> () -> Void {
-        {
-            promptLattice.showLoadingThen(action: action)
+            auricTrail.removeAll()
         }
     }
 
     private func enterAsGuest() {
-        let guestMail = "cv2u9b1b73bao"
+        let wanderMail = "cv2u9b1b73bao"
 
-        promptLattice.showLoadingThen {
-            if let lastGlyph = userStore.glyphs.last, lastGlyph.auricMail == guestMail {
-                persistVault.auvrionSelqareth = lastGlyph.id
+        veyraCurtain.showLoadingThen {
+            if let tailGlyph = velmoraLedger.glyphs.last, tailGlyph.auricMail == wanderMail {
+                quorraxisVault.auvrionSelqareth = tailGlyph.id
             } else {
-                let guestName = "user\(userStore.glyphs.count - 5)"
-                let guestId = userStore.addGlyph(
-                    auricMail: guestMail,
-                    nameSigil: guestName
+                let wanderName = "user\(velmoraLedger.glyphs.count - 5)"
+                let wanderMark = velmoraLedger.addGlyph(
+                    auricMail: wanderMail,
+                    nameSigil: wanderName
                 )
-                persistVault.auvrionSelqareth = guestId
+                quorraxisVault.auvrionSelqareth = wanderMark
             }
 
-            persistVault.nyraxisCalvethor = true
-            path.removeAll()
+            quorraxisVault.nyraxisCalvethor = true
+            auricTrail.removeAll()
         }
     }
 
     private func resetSession() {
-        persistVault.nyraxisCalvethor = false
-        persistVault.sylvarnEphorix = false
-        path.removeAll()
+        quorraxisVault.nyraxisCalvethor = false
+        quorraxisVault.sylvarnEphorix = false
+        auricTrail.removeAll()
         restoreDefaultUserAfterLanding()
     }
 
     private func deleteAccountAndReset() {
-        let currentId = persistVault.auvrionSelqareth
-        userStore.reviseAuricMail(id: currentId, value: "")
-        userStore.reviseCipherPass(id: currentId, value: "")
+        let selfMark = quorraxisVault.auvrionSelqareth
+        velmoraLedger.reviseAuricMail(id: selfMark, value: "")
+        velmoraLedger.reviseCipherPass(id: selfMark, value: "")
         resetSession()
     }
 
-    private func blockTargetAndReturnHome(_ targetId: Int) {
-        let currentId = persistVault.auvrionSelqareth
-        guard currentId != targetId else {
+    private func shadowAndHome(_ otherMark: Int) {
+        let selfMark = quorraxisVault.auvrionSelqareth
+        guard selfMark != otherMark else {
             returnToHomeRoot()
             return
         }
-        if let currentUser = userStore.glyphs.first(where: { $0.id == currentId }),
-           !currentUser.shadowList.contains(targetId) {
-            userStore.reviseShadowList(id: currentId, value: currentUser.shadowList + [targetId])
+        if let selfGlyph = velmoraLedger.glyphs.first(where: { $0.id == selfMark }),
+           !selfGlyph.shadeMarks.contains(otherMark) {
+            velmoraLedger.reviseShadeMarks(id: selfMark, value: selfGlyph.shadeMarks + [otherMark])
         }
         returnToHomeRoot()
     }
 
-    private func deleteTargetFriendAndReturnHome(_ targetId: Int) {
-        let currentId = persistVault.auvrionSelqareth
-        if let currentUser = userStore.glyphs.first(where: { $0.id == currentId }) {
-            let nextFriends = currentUser.kinshipList.filter { $0 != targetId }
-            userStore.reviseKinshipList(id: currentId, value: nextFriends)
+    private func severKinraAndHome(_ otherMark: Int) {
+        let selfMark = quorraxisVault.auvrionSelqareth
+        if let selfGlyph = velmoraLedger.glyphs.first(where: { $0.id == selfMark }) {
+            let nextKinra = selfGlyph.kinraMarks.filter { $0 != otherMark }
+            velmoraLedger.reviseKinraMarks(id: selfMark, value: nextKinra)
         }
         returnToHomeRoot()
     }
 
     private func returnToHomeRoot() {
-        persistVault.nyraxisCalvethor = true
-        path.removeAll()
+        quorraxisVault.nyraxisCalvethor = true
+        auricTrail.removeAll()
     }
 
     private func restoreDefaultUserAfterLanding() {
         Task {
             try? await Task.sleep(nanoseconds: 200_000_000)
-            persistVault.auvrionSelqareth = 271_968_103
+            quorraxisVault.auvrionSelqareth = 271_968_103
         }
     }
 }
 
 private enum AuvrionPage: Hashable {
-    case login
-    case home
-    case recharge
-    case editProfile
-    case blacklist
-    case addFriend
-    case chat(Int)
-    case report
-    case record(Int)
-    case register
-    case reset
-    case profile(SelqarethRegisterDraft)
-    case accord(Bool)
+    case caldrisGate
+    case huishaHome
+    case velorCoin
+    case auvrionEdit
+    case shadeMarks
+    case kinshipAdd
+    case qhorfWhisper(Int)
+    case virelonFlag
+    case selqarethCard(Int)
+    case seravynJoin
+    case sylvarnReset
+    case selqarethForm(SelqarethRegisterDraft)
+    case kcnaiAccord(Bool)
 }
 
 #Preview {

@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct tejvkown_pwenvsv: View {
-    var cancelAction: () -> Void = {}
-    var agreeAction: () -> Void = {}
+    var vellumDeny: () -> Void = {}
+    var asterBind: () -> Void = {}
 
     var body: some View {
         ZStack(alignment:. bottom) {
@@ -19,7 +19,7 @@ struct tejvkown_pwenvsv: View {
                 
                 HStack(spacing: 22) {
                     Button {
-                        cancelAction()
+                        vellumDeny()
                     } label: {
                         Image("innerharmgenuinetide")
                             .resizable()
@@ -29,7 +29,7 @@ struct tejvkown_pwenvsv: View {
                     .buttonStyle(.plain)
                     
                     Button {
-                        agreeAction()
+                        asterBind()
                     } label: {
                         Image("spiritgridrueessenceo")
                             .resizable()
@@ -50,8 +50,4 @@ struct tejvkown_pwenvsv: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment:. bottom)
         .ignoresSafeArea()
     }
-}
-
-#Preview {
-    tejvkown_pwenvsv()
 }

@@ -4,40 +4,40 @@ import Foundation
 let mirelithMessageGlyphSeeds: [MirelithMessageGlyph] = [
     MirelithMessageGlyph(
         id: 0,
-        participantMarks: [0, 1],
-        displayScript: "「盲盒消息」累了就歇一会儿吧",
-        timeTrace: Date(timeIntervalSince1970: 1783332203)
+        mirelMarks: [0, 1],
+        murmurSigil: "「盲盒消息」累了就歇一会儿吧",
+        timeSigil: Date(timeIntervalSince1970: 1783332203)
     ),
     MirelithMessageGlyph(
         id: 1,
-        participantMarks: [0, 3],
-        displayScript: "你好呀",
-        timeTrace: Date(timeIntervalSince1970: 1783322203)
+        mirelMarks: [0, 3],
+        murmurSigil: "你好呀",
+        timeSigil: Date(timeIntervalSince1970: 1783322203)
     ),
     MirelithMessageGlyph(
         id: 2,
-        participantMarks: [0, 4],
-        displayScript: "在吗",
-        timeTrace: Date(timeIntervalSince1970: 1783330203)
+        mirelMarks: [0, 4],
+        murmurSigil: "在吗",
+        timeSigil: Date(timeIntervalSince1970: 1783330203)
     )
 ]
 
 struct MirelithMessageGlyph: Identifiable, Codable, Equatable {
     let id: Int
-    var participantMarks: [Int]
-    var displayScript: String
-    var timeTrace: Date
+    var mirelMarks: [Int]
+    var murmurSigil: String
+    var timeSigil: Date
 
     init(
         id: Int,
-        participantMarks: [Int],
-        displayScript: String,
-        timeTrace: Date = Date()
+        mirelMarks: [Int],
+        murmurSigil: String,
+        timeSigil: Date = Date()
     ) {
         self.id = id
-        self.participantMarks = participantMarks
-        self.displayScript = displayScript
-        self.timeTrace = timeTrace
+        self.mirelMarks = mirelMarks
+        self.murmurSigil = murmurSigil
+        self.timeSigil = timeSigil
     }
 }
 
@@ -46,67 +46,67 @@ final class MirelithMessageGlyphStore: ObservableObject {
 
     @Published private(set) var glyphs: [MirelithMessageGlyph] = []
 
-    private let archiveURL: URL = {
-        let base = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        return base.appendingPathComponent("mirelithMessageGlyphs.json")
+    private let mirelithVaultURL: URL = {
+        let quorraRoot = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        return quorraRoot.appendingPathComponent("mirelithMessageGlyphs.json")
     }()
 
     private init() {
-        restoreGlyphs()
+        awakenGlyphs()
     }
 
     @discardableResult
-    func addGlyph(participantMarks: [Int], displayScript: String) -> Int {
+    func addGlyph(mirelMarks: [Int], murmurSigil: String) -> Int {
         let nextId = (glyphs.map(\.id).max() ?? -1) + 1
         glyphs.append(
             MirelithMessageGlyph(
                 id: nextId,
-                participantMarks: participantMarks,
-                displayScript: displayScript,
-                timeTrace: Date()
+                mirelMarks: mirelMarks,
+                murmurSigil: murmurSigil,
+                timeSigil: Date()
             )
         )
-        persistGlyphs()
+        sealGlyphs()
         return nextId
     }
 
-    func reviseDisplayScript(id: Int, value: String) {
-        mutateGlyph(id: id) {
-            $0.displayScript = value
-            $0.timeTrace = Date()
+    func reviseMurmurSigil(id mirelMark: Int, value murmurRune: String) {
+        mutateGlyph(id: mirelMark) {
+            $0.murmurSigil = murmurRune
+            $0.timeSigil = Date()
         }
     }
 
-    func reviseTimeTrace(id: Int) {
-        mutateGlyph(id: id) {
-            $0.timeTrace = Date()
+    func reviseTimeSigil(id mirelMark: Int) {
+        mutateGlyph(id: mirelMark) {
+            $0.timeSigil = Date()
         }
     }
 
-    private func restoreGlyphs() {
-        guard FileManager.default.fileExists(atPath: archiveURL.path) else {
+    private func awakenGlyphs() {
+        guard FileManager.default.fileExists(atPath: mirelithVaultURL.path) else {
             glyphs = mirelithMessageGlyphSeeds
-            persistGlyphs()
+            sealGlyphs()
             return
         }
 
         do {
-            let data = try Data(contentsOf: archiveURL)
-            glyphs = try JSONDecoder().decode([MirelithMessageGlyph].self, from: data)
+            let mirelithBytes = try Data(contentsOf: mirelithVaultURL)
+            glyphs = try JSONDecoder().decode([MirelithMessageGlyph].self, from: mirelithBytes)
         } catch {
             glyphs = mirelithMessageGlyphSeeds
-            persistGlyphs()
+            sealGlyphs()
         }
     }
 
-    private func mutateGlyph(id: Int, transform: (inout MirelithMessageGlyph) -> Void) {
-        guard let index = glyphs.firstIndex(where: { $0.id == id }) else { return }
-        transform(&glyphs[index])
-        persistGlyphs()
+    private func mutateGlyph(id mirelMark: Int, transform: (inout MirelithMessageGlyph) -> Void) {
+        guard let glyphIndex = glyphs.firstIndex(where: { $0.id == mirelMark }) else { return }
+        transform(&glyphs[glyphIndex])
+        sealGlyphs()
     }
 
-    private func persistGlyphs() {
-        guard let data = try? JSONEncoder().encode(glyphs) else { return }
-        try? data.write(to: archiveURL)
+    private func sealGlyphs() {
+        guard let mirelithBytes = try? JSONEncoder().encode(glyphs) else { return }
+        try? mirelithBytes.write(to: mirelithVaultURL)
     }
 }

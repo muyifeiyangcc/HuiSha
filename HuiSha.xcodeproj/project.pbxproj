@@ -253,16 +253,17 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6NUFR97X3A;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "回啥";
+				INFOPLIST_KEY_CFBundleDisplayName = Meylo;
 				INFOPLIST_KEY_NSCameraUsageDescription = "本应用需调用相机权限，支持拍摄照片用于个人头像或分享图片。拍摄素材仅本地保存，未经您许可，不会主动上传、分享拍摄数据。";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "本应用需调用麦克风权限，用于语音聊天功能。仅在您主动授权后才会收录音频，不会私自采集、上传及外传录音内容。";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "本应用请求访问您的照片图库，您可选取本地图片用于两类场景：上传图片设置个人账号头像、在应用内向其他用户发送分享图片。您选中的所有照片仅用于上述授权场景，未经您明确许可不会对外泄露、分享。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
@@ -271,7 +272,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = app.myfy.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hufuqwgosaive.Huisha;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -292,16 +293,17 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6NUFR97X3A;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "回啥";
+				INFOPLIST_KEY_CFBundleDisplayName = Meylo;
 				INFOPLIST_KEY_NSCameraUsageDescription = "本应用需调用相机权限，支持拍摄照片用于个人头像或分享图片。拍摄素材仅本地保存，未经您许可，不会主动上传、分享拍摄数据。";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "本应用需调用麦克风权限，用于语音聊天功能。仅在您主动授权后才会收录音频，不会私自采集、上传及外传录音内容。";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "本应用请求访问您的照片图库，您可选取本地图片用于两类场景：上传图片设置个人账号头像、在应用内向其他用户发送分享图片。您选中的所有照片仅用于上述授权场景，未经您明确许可不会对外泄露、分享。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
@@ -310,7 +312,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = app.myfy.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hufuqwgosaive.Huisha;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

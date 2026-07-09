@@ -7,14 +7,14 @@ struct uoqnfbajse_qbvjvsnoen: View {
     var reportAction: () -> Void = {}
     var blockAction: (Int) -> Void = { _ in }
     var deleteAction: (Int) -> Void = { _ in }
-    var chatAction: () -> Void = {}
+    var whisperAction: () -> Void = {}
     var loginPromptAction: () -> Void = {}
 
     @EnvironmentObject private var promptLattice: VeyraPromptLattice
     @EnvironmentObject private var persistVault: QuorraxisPersistVault
     @StateObject private var userStore = VelmoraUserGlyphStore.shared
     @StateObject private var messageStore = MirelithMessageGlyphStore.shared
-    @StateObject private var chatStore = QuenlithChatGlyphStore.shared
+    @StateObject private var qhorfStore = QhorfRuneStore.shared
 
     private var profileUser: VelmoraUserGlyph? {
         userStore.glyphs.first { $0.id == auvrionSelqareth }
@@ -30,12 +30,12 @@ struct uoqnfbajse_qbvjvsnoen: View {
 
     private var sharedMessages: [MirelithMessageGlyph] {
         let pair = Set([persistVault.auvrionSelqareth, auvrionSelqareth])
-        return messageStore.glyphs.filter { Set($0.participantMarks) == pair }
+        return messageStore.glyphs.filter { Set($0.mirelMarks) == pair }
     }
 
-    private var sharedChats: [QuenlithChatGlyph] {
+    private var sharedQhorfs: [QhorfRune] {
         let messageIds = Set(sharedMessages.map(\.id))
-        return chatStore.glyphs.filter { messageIds.contains($0.messageMark) }
+        return qhorfStore.glyphs.filter { messageIds.contains($0.mirelMark) }
     }
     
     var body: some View {
@@ -91,7 +91,7 @@ struct uoqnfbajse_qbvjvsnoen: View {
             }
             
             VStack(spacing: 0) {
-                avatarView(path: profileUser?.imageTrace ?? "", size: 89)
+                avatarView(path: profileUser?.soulTrace ?? "", size: 89)
                     .allowsHitTesting(false)
                 
                 HStack(spacing: 12) {
@@ -130,7 +130,7 @@ struct uoqnfbajse_qbvjvsnoen: View {
                 Spacer()
                 
                 Button {
-                    handleChatTap()
+                    handleWhisperTap()
                 } label: {
                     Image("corilumntoreldcery")
                         .resizable()
@@ -146,23 +146,23 @@ struct uoqnfbajse_qbvjvsnoen: View {
     }
 
     private var profileBadgeText: String {
-        let gender = profileUser?.personaKind.isEmpty == false ? profileUser?.personaKind ?? "不公开" : "不公开"
-        let age = profileUser?.yearsCount ?? 18
+        let gender = profileUser?.mienKind.isEmpty == false ? profileUser?.mienKind ?? "不公开" : "不公开"
+        let age = profileUser?.yearCount ?? 18
         return "\(gender)·\(age)"
     }
 
-    private func handleChatTap() {
+    private func handleWhisperTap() {
         guard persistVault.sylvarnEphorix else {
             promptLattice.showLoginPanel(loginAction: loginPromptAction)
             return
         }
 
-        guard currentUser?.kinshipList.contains(auvrionSelqareth) == true else {
+        guard currentUser?.kinraMarks.contains(auvrionSelqareth) == true else {
             promptLattice.showText("互为好友才能聊天")
             return
         }
 
-        chatAction()
+        whisperAction()
     }
 
     private func handleMoreTap() {
@@ -188,9 +188,9 @@ struct uoqnfbajse_qbvjvsnoen: View {
 
             HStack(spacing: 26) {
                 HStack(spacing: -12) {
-                    avatarView(path: currentUser?.imageTrace ?? "", size: 60)
+                    avatarView(path: currentUser?.soulTrace ?? "", size: 60)
 
-                    avatarView(path: profileUser?.imageTrace ?? "", size: 60)
+                    avatarView(path: profileUser?.soulTrace ?? "", size: 60)
                 }
 
                 VStack(alignment: .leading, spacing: 6) {
@@ -208,11 +208,11 @@ struct uoqnfbajse_qbvjvsnoen: View {
     }
 
     private var blindMessageCount: Int {
-        sharedChats.filter(\.chatKind).count
+        sharedQhorfs.filter(\.blindKind).count
     }
 
     private var knownDays: Int {
-        guard let earliest = sharedMessages.map(\.timeTrace).min() else { return 0 }
+        guard let earliest = sharedMessages.map(\.timeSigil).min() else { return 0 }
         let day = Calendar.current.dateComponents([.day], from: earliest, to: Date()).day ?? 0
         return max(day, 1)
     }
@@ -232,10 +232,4 @@ struct uoqnfbajse_qbvjvsnoen: View {
         .frame(width: size, height: size)
         .clipShape(Circle())
     }
-}
-
-#Preview {
-    uoqnfbajse_qbvjvsnoen()
-        .environmentObject(VeyraPromptLattice())
-        .environmentObject(QuorraxisPersistVault.light)
 }

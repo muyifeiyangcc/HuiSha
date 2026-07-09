@@ -14,7 +14,7 @@ struct MevericoNulistora: View {
 
     private var blockedUsers: [VelmoraUserGlyph] {
         guard let currentUser else { return [] }
-        return currentUser.shadowList.compactMap { blockedId in
+        return currentUser.shadeMarks.compactMap { blockedId in
             userStore.glyphs.first { $0.id == blockedId }
         }
     }
@@ -35,7 +35,7 @@ struct MevericoNulistora: View {
                         } else {
                             ForEach(blockedUsers) { user in
                             HStack(spacing: 14) {
-                                avatarView(path: user.imageTrace)
+                                avatarView(path: user.soulTrace)
 
                                 Text(user.nameSigil)
                                     .font(.system(size: 16, weight: .bold))
@@ -119,12 +119,7 @@ struct MevericoNulistora: View {
 
     private func removeBlockedUser(_ userId: Int) {
         guard let currentUser else { return }
-        let nextList = currentUser.shadowList.filter { $0 != userId }
-        userStore.reviseShadowList(id: currentUser.id, value: nextList)
+        let nextList = currentUser.shadeMarks.filter { $0 != userId }
+        userStore.reviseShadeMarks(id: currentUser.id, value: nextList)
     }
-}
-
-#Preview {
-    MevericoNulistora()
-        .environmentObject(QuorraxisPersistVault.light)
 }

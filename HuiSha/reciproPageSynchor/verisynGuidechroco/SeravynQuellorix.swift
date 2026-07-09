@@ -1,10 +1,3 @@
-//
-//  SeravynQuellorix.swift
-//  HuiSha
-//
-//  Created by yangyang on 2026/7/1.
-//
-
 import SwiftUI
 
 struct SeravynQuellorix: View {
@@ -12,7 +5,7 @@ struct SeravynQuellorix: View {
     @StateObject private var userStore = VelmoraUserGlyphStore.shared
 
     var backAction: () -> Void = {}
-    var submitAction: (_ nickname: String, _ email: String, _ password: String) -> Void = { _, _, _ in }
+    var submitAction: (_ auricName: String, _ auricMail: String, _ auricCipher: String) -> Void = { _, _, _ in }
 
     @State private var auvrionSelqareth = ""
     @State private var nyraxisCalvethor = ""
@@ -40,33 +33,28 @@ struct SeravynQuellorix: View {
     }
 
     private func validateAndSubmit() {
-        let nickname = auvrionSelqareth.trimmingCharacters(in: .whitespacesAndNewlines)
-        let email = nyraxisCalvethor.trimmingCharacters(in: .whitespacesAndNewlines)
-        let password = quorraxisMirelle.trimmingCharacters(in: .whitespacesAndNewlines)
-        let confirmation = vellumAsterion.trimmingCharacters(in: .whitespacesAndNewlines)
+        let auricName = auvrionSelqareth.trimmingCharacters(in: .whitespacesAndNewlines)
+        let auricMail = nyraxisCalvethor.trimmingCharacters(in: .whitespacesAndNewlines)
+        let auricCipher = quorraxisMirelle.trimmingCharacters(in: .whitespacesAndNewlines)
+        let cipherMirror = vellumAsterion.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        guard !nickname.isEmpty, !email.isEmpty, !password.isEmpty, !confirmation.isEmpty else {
+        guard !auricName.isEmpty, !auricMail.isEmpty, !auricCipher.isEmpty, !cipherMirror.isEmpty else {
             promptLattice.showText("请完整填写信息")
             return
         }
 
-        guard !userStore.glyphs.contains(where: { $0.auricMail == email }) else {
+        guard !userStore.glyphs.contains(where: { $0.auricMail == auricMail }) else {
             promptLattice.showText("该邮箱已注册，请不要重复注册")
             return
         }
 
-        guard password == confirmation else {
+        guard auricCipher == cipherMirror else {
             promptLattice.showText("两次密码输入不一致")
             return
         }
 
         promptLattice.showLoadingThen {
-            submitAction(nickname, email, password)
+            submitAction(auricName, auricMail, auricCipher)
         }
     }
-}
-
-#Preview {
-    SeravynQuellorix()
-        .environmentObject(VeyraPromptLattice())
 }

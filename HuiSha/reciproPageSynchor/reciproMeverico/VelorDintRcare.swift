@@ -1,15 +1,15 @@
 import SwiftUI
 
 struct VelorDintRcare: View {
-    @EnvironmentObject private var persistVault: QuorraxisPersistVault
-    @EnvironmentObject private var promptLattice: VeyraPromptLattice
-    @StateObject private var userStore = VelmoraUserGlyphStore.shared
-    @StateObject private var storeKitBridge = VelorDintRcareStoreKitBridge.shared
-    @State private var isPreparingPayment = true
+    @EnvironmentObject private var qorraVault: QuorraxisPersistVault
+    @EnvironmentObject private var veyraVeil: VeyraPromptLattice
+    @StateObject private var velmoraLedger = VelmoraUserGlyphStore.shared
+    @StateObject private var velorBridge = VelorAsterBridge.shared
+    @State private var isVelorWaking = true
 
     var backAction: () -> Void = {}
 
-    private let columns = [
+    private let dianthColumns = [
         GridItem(.flexible(), spacing: 18),
         GridItem(.flexible(), spacing: 18),
         GridItem(.flexible(), spacing: 18)
@@ -21,18 +21,18 @@ struct VelorDintRcare: View {
                 .ignoresSafeArea()
 
             VStack(spacing: 0) {
-                header
+                velorCrest
 
                 ScrollView(showsIndicators: false) {
-                    LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(DianthRechargeCatalog.items) { item in
+                    LazyVGrid(columns: dianthColumns, spacing: 20) {
+                        ForEach(DianthAsterVault.runes) { coinRune in
                             Button {
-                                storeKitBridge.buy(item)
+                                velorBridge.cast(coinRune)
                             } label: {
-                                rechargeCard(item)
+                                dianthTile(coinRune)
                             }
                             .buttonStyle(.plain)
-                            .disabled(isPreparingPayment || storeKitBridge.purchasingIdentifier != nil)
+                            .disabled(isVelorWaking || velorBridge.activeDianthMark != nil)
                         }
                     }
                     .padding(.horizontal, 16)
@@ -56,33 +56,33 @@ struct VelorDintRcare: View {
         }
         .ignoresSafeArea()
         .onAppear {
-            isPreparingPayment = storeKitBridge.productsByIdentifier.isEmpty
-            storeKitBridge.purchaseDidStart = {
-                promptLattice.showLoading("支付中")
+            isVelorWaking = velorBridge.dianthByMark.isEmpty
+            velorBridge.velorDidIgnite = {
+                veyraVeil.showLoading("支付中")
             }
-            storeKitBridge.purchaseSuccess = { item in
-                promptLattice.dismiss()
-                userStore.shiftGemCount(id: persistVault.auvrionSelqareth, amount: item.amount)
-                promptLattice.showText("充值成功")
+            velorBridge.velorDidBloom = { coinRune in
+                veyraVeil.dismiss()
+                velmoraLedger.shiftDianthCount(id: qorraVault.auvrionSelqareth, amount: coinRune.dianthAmount)
+                veyraVeil.showText("充值成功")
             }
-            storeKitBridge.purchaseFailure = { message in
-                promptLattice.dismiss()
-                promptLattice.showText(message)
+            velorBridge.velorDidFray = { velorText in
+                veyraVeil.dismiss()
+                veyraVeil.showText(velorText)
             }
-            storeKitBridge.productsLoadCompletion = { isReady in
-                isPreparingPayment = false
+            velorBridge.dianthLoadSettled = { isReady in
+                isVelorWaking = false
                 if isReady {
-                    promptLattice.dismiss()
+                    veyraVeil.dismiss()
                 }
             }
-            if isPreparingPayment {
-                promptLattice.showLoading("支付初始化中")
+            if isVelorWaking {
+                veyraVeil.showLoading("支付初始化中")
             }
-            storeKitBridge.loadProductsIfNeeded()
+            velorBridge.wakeDianthIfNeeded()
         }
     }
 
-    private var header: some View {
+    private var velorCrest: some View {
         ZStack {
             Image("trumroworluaoizer")
                 .resizable()
@@ -105,26 +105,26 @@ struct VelorDintRcare: View {
         .clipShape(BottomRoundDianth(radius: 18))
     }
 
-    private func rechargeCard(_ item: DianthRechargeItem) -> some View {
+    private func dianthTile(_ coinRune: VelorDianthRune) -> some View {
         ZStack {
             Image("eatpusritesencrdiane")
                 .resizable()
                 .scaledToFit()
 
             VStack(spacing: 8) {
-                Text(item.amountText)
+                Text(coinRune.dianthText)
                     .font(.system(size: 20, weight: .bold))
                     .foregroundColor(AuvrionChromatics.nyraxisCalvethor)
                     .minimumScaleFactor(0.75)
 
-                Text(storeKitBridge.displayPrice(for: item))
+                Text(velorBridge.priceSigil(for: coinRune))
                     .font(.system(size: 16, weight: .regular))
                     .foregroundColor(AuvrionChromatics.nyraxisCalvethor)
                     .minimumScaleFactor(0.75)
             }
             .padding(.top, 12)
 
-            if storeKitBridge.purchasingIdentifier == item.productIdentifier {
+            if velorBridge.activeDianthMark == coinRune.storeMark {
                 ProgressView()
                     .progressViewStyle(.circular)
                     .tint(AuvrionChromatics.sylvarnEphorix)
@@ -136,7 +136,7 @@ struct VelorDintRcare: View {
     }
 
     private var currentGemCount: Int {
-        userStore.glyphs.first(where: { $0.id == persistVault.auvrionSelqareth })?.gemCount ?? 0
+        velmoraLedger.glyphs.first(where: { $0.id == qorraVault.auvrionSelqareth })?.dianthCount ?? 0
     }
 }
 
@@ -154,8 +154,4 @@ private struct BottomRoundDianth: Shape {
         path.closeSubpath()
         return path
     }
-}
-
-#Preview {
-    VelorDintRcare()
 }

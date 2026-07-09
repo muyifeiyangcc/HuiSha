@@ -1,26 +1,19 @@
-//
-//  AuvrionSelqarethProfile.swift
-//  HuiSha
-//
-//  Created by yangyang on 2026/7/1.
-//
-
 import SwiftUI
 import PhotosUI
 import UIKit
 
 struct SelqarethRegisterDraft: Hashable {
-    let nickname: String
-    let email: String
-    let password: String
+    let auricName: String
+    let auricMail: String
+    let auricCipher: String
 }
 
 struct AuvrionSelqarethProfile: View {
-    @EnvironmentObject private var promptLattice: VeyraPromptLattice
-    @EnvironmentObject private var persistVault: QuorraxisPersistVault
-    @StateObject private var userStore = VelmoraUserGlyphStore.shared
+    @EnvironmentObject private var veyraVeil: VeyraPromptLattice
+    @EnvironmentObject private var qorraVault: QuorraxisPersistVault
+    @StateObject private var velmoraHearth = VelmoraUserGlyphStore.shared
 
-    var registerDraft: SelqarethRegisterDraft?
+    var selqarethDraft: SelqarethRegisterDraft?
     var backAction: () -> Void = {}
     var submitAction: () -> Void = {}
     var loginPromptAction: () -> Void = {}
@@ -31,9 +24,9 @@ struct AuvrionSelqarethProfile: View {
     @State private var vellumAsterion = ""
     @State private var sylvarnEphorix: PhotosPickerItem?
     @State private var caldrisVeyonneth: Image?
-    @State private var selectedAvatarData: Data?
+    @State private var soulBytes: Data?
 
-    private let ageOptions = (18...99).map { "\($0)" }
+    private let yearRunes = (18...99).map { "\($0)" }
 
     var body: some View {
         QuenraLuminethShell(backAction: backAction) {
@@ -64,10 +57,10 @@ struct AuvrionSelqarethProfile: View {
                 .padding(.top, 124)
                 .onChange(of: sylvarnEphorix) { newValue in
                     Task {
-                        if let data = try? await newValue?.loadTransferable(type: Data.self),
-                           let uiImage = UIImage(data: data) {
-                            selectedAvatarData = data
-                            caldrisVeyonneth = Image(uiImage: uiImage)
+                        if let pickedSoul = try? await newValue?.loadTransferable(type: Data.self),
+                           let soulImage = UIImage(data: pickedSoul) {
+                            soulBytes = pickedSoul
+                            caldrisVeyonneth = Image(uiImage: soulImage)
                         }
                     }
                 }
@@ -76,128 +69,122 @@ struct AuvrionSelqarethProfile: View {
                     ElarionVaskethra(label: "heartlinkco", placeholder: "请输入", value: $auvrionSelqareth),
                     ElarionVaskethra(label: "genuflowco", placeholder: "请选择", value: $nyraxisCalvethor, hasChevron: true, options: ["中国大陆", "中国香港", "中国台湾", "海外"]),
                     ElarionVaskethra(label: "recipauthentic", placeholder: "请选择", value: $quorraxisMirelle, hasChevron: true, options: ["男", "女", "不公开"]),
-                    ElarionVaskethra(label: "authenticrecip", placeholder: "请选择", value: $vellumAsterion, hasChevron: true, options: ageOptions)
+                    ElarionVaskethra(label: "authenticrecip", placeholder: "请选择", value: $vellumAsterion, hasChevron: true, options: yearRunes)
                 ])
                 .padding(.top, 62)
 
                 Spacer()
 
-                MorvianLethirax(asset: "verimutualcore", action: handleSubmit)
+                MorvianLethirax(asset: "verimutualcore", action: sealSelqareth)
                     .padding(.bottom, 45)
             }
         }
         .ignoresSafeArea()
         .onAppear {
-            fillExistingDataIfNeeded()
+            bloomSelqarethIfNeeded()
         }
     }
 
-    private func handleSubmit() {
-        if let registerDraft {
-            createRegisteredUser(registerDraft)
+    private func sealSelqareth() {
+        if let selqarethDraft {
+            birthSelqareth(selqarethDraft)
             return
         }
 
-        updateCurrentUser()
+        renewSelqareth()
     }
 
-    private func createRegisteredUser(_ registerDraft: SelqarethRegisterDraft) {
-        let nickname = auvrionSelqareth.trimmingCharacters(in: .whitespacesAndNewlines)
-        let locale = nyraxisCalvethor.trimmingCharacters(in: .whitespacesAndNewlines)
-        let persona = quorraxisMirelle.trimmingCharacters(in: .whitespacesAndNewlines)
-        let ageText = vellumAsterion.trimmingCharacters(in: .whitespacesAndNewlines)
+    private func birthSelqareth(_ selqarethDraft: SelqarethRegisterDraft) {
+        let nameRune = auvrionSelqareth.trimmingCharacters(in: .whitespacesAndNewlines)
+        let realmRune = nyraxisCalvethor.trimmingCharacters(in: .whitespacesAndNewlines)
+        let mienRune = quorraxisMirelle.trimmingCharacters(in: .whitespacesAndNewlines)
+        let yearText = vellumAsterion.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        guard !nickname.isEmpty, !locale.isEmpty, !persona.isEmpty, !ageText.isEmpty else {
-            promptLattice.showText("请完整填写信息")
+        guard !nameRune.isEmpty, !realmRune.isEmpty, !mienRune.isEmpty, !yearText.isEmpty else {
+            veyraVeil.showText("请完整填写信息")
             return
         }
 
-        guard !userStore.glyphs.contains(where: { $0.auricMail == registerDraft.email }) else {
-            promptLattice.showText("该邮箱已注册，请不要重复注册")
+        guard !velmoraHearth.glyphs.contains(where: { $0.auricMail == selqarethDraft.auricMail }) else {
+            veyraVeil.showText("该邮箱已注册，请不要重复注册")
             return
         }
 
-        let userId = userStore.addGlyph(
-            auricMail: registerDraft.email,
-            cipherPass: registerDraft.password,
-            nameSigil: nickname,
-            localeMark: locale,
-            personaKind: persona,
-            yearsCount: parsedAge(from: ageText)
+        let selfMark = velmoraHearth.addGlyph(
+            auricMail: selqarethDraft.auricMail,
+            cipherPass: selqarethDraft.auricCipher,
+            nameSigil: nameRune,
+            realmMark: realmRune,
+            mienKind: mienRune,
+            yearCount: yearCount(from: yearText)
         )
 
-        if let selectedAvatarData {
-            userStore.reviseImageTrace(id: userId, avatarData: selectedAvatarData)
+        if let soulBytes {
+            velmoraHearth.reviseSoulTrace(id: selfMark, soulBytes: soulBytes)
         }
 
-        promptLattice.showLoadingThen {
-            persistVault.auvrionSelqareth = userId
-            persistVault.nyraxisCalvethor = true
-            persistVault.sylvarnEphorix = true
+        veyraVeil.showLoadingThen {
+            qorraVault.auvrionSelqareth = selfMark
+            qorraVault.nyraxisCalvethor = true
+            qorraVault.sylvarnEphorix = true
             submitAction()
         }
     }
 
-    private func updateCurrentUser() {
-        guard persistVault.sylvarnEphorix else {
-            promptLattice.showLoginPanel(loginAction: loginPromptAction)
+    private func renewSelqareth() {
+        guard qorraVault.sylvarnEphorix else {
+            veyraVeil.showLoginPanel(loginAction: loginPromptAction)
             return
         }
 
-        let nickname = auvrionSelqareth.trimmingCharacters(in: .whitespacesAndNewlines)
-        let locale = nyraxisCalvethor.trimmingCharacters(in: .whitespacesAndNewlines)
-        let persona = quorraxisMirelle.trimmingCharacters(in: .whitespacesAndNewlines)
-        let ageText = vellumAsterion.trimmingCharacters(in: .whitespacesAndNewlines)
+        let nameRune = auvrionSelqareth.trimmingCharacters(in: .whitespacesAndNewlines)
+        let realmRune = nyraxisCalvethor.trimmingCharacters(in: .whitespacesAndNewlines)
+        let mienRune = quorraxisMirelle.trimmingCharacters(in: .whitespacesAndNewlines)
+        let yearText = vellumAsterion.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        guard !nickname.isEmpty, !locale.isEmpty, !persona.isEmpty, !ageText.isEmpty else {
-            promptLattice.showText("请完整填写信息")
+        guard !nameRune.isEmpty, !realmRune.isEmpty, !mienRune.isEmpty, !yearText.isEmpty else {
+            veyraVeil.showText("请完整填写信息")
             return
         }
 
-        let currentId = persistVault.auvrionSelqareth
-        userStore.reviseNameSigil(id: currentId, value: nickname)
-        userStore.reviseLocaleMark(id: currentId, value: locale)
-        userStore.revisePersonaKind(id: currentId, value: persona)
-        userStore.reviseYearsCount(id: currentId, value: parsedAge(from: ageText))
-        if let selectedAvatarData {
-            userStore.reviseImageTrace(id: currentId, avatarData: selectedAvatarData)
+        let selfMark = qorraVault.auvrionSelqareth
+        velmoraHearth.reviseNameSigil(id: selfMark, value: nameRune)
+        velmoraHearth.reviseRealmMark(id: selfMark, value: realmRune)
+        velmoraHearth.reviseMienKind(id: selfMark, value: mienRune)
+        velmoraHearth.reviseYearCount(id: selfMark, value: yearCount(from: yearText))
+        if let soulBytes {
+            velmoraHearth.reviseSoulTrace(id: selfMark, soulBytes: soulBytes)
         }
 
-        promptLattice.showLoadingThenTextThen("加载中", successText: "修改成功") {
+        veyraVeil.showLoadingThenTextThen("加载中", successText: "修改成功") {
             submitAction()
         }
     }
 
-    private func fillExistingDataIfNeeded() {
-        if let registerDraft {
+    private func bloomSelqarethIfNeeded() {
+        if let selqarethDraft {
             if auvrionSelqareth.isEmpty {
-                auvrionSelqareth = registerDraft.nickname
+                auvrionSelqareth = selqarethDraft.auricName
             }
             return
         }
 
         guard auvrionSelqareth.isEmpty,
-              let currentUser = userStore.glyphs.first(where: { $0.id == persistVault.auvrionSelqareth }) else {
+              let selfGlyph = velmoraHearth.glyphs.first(where: { $0.id == qorraVault.auvrionSelqareth }) else {
             return
         }
 
-        auvrionSelqareth = currentUser.nameSigil
-        nyraxisCalvethor = currentUser.localeMark
-        quorraxisMirelle = currentUser.personaKind
-        vellumAsterion = "\(currentUser.yearsCount)"
-        if let uiImage = UIImage(contentsOfFile: currentUser.imageTrace) {
-            caldrisVeyonneth = Image(uiImage: uiImage)
+        auvrionSelqareth = selfGlyph.nameSigil
+        nyraxisCalvethor = selfGlyph.realmMark
+        quorraxisMirelle = selfGlyph.mienKind
+        vellumAsterion = "\(selfGlyph.yearCount)"
+        if let soulImage = UIImage(contentsOfFile: selfGlyph.soulTrace) {
+            caldrisVeyonneth = Image(uiImage: soulImage)
         }
     }
 
-    private func parsedAge(from text: String) -> Int {
+    private func yearCount(from text: String) -> Int {
         let prefix = text.prefix { $0.isNumber }
         return Int(prefix) ?? 18
     }
-}
-
-#Preview {
-    AuvrionSelqarethProfile()
-        .environmentObject(VeyraPromptLattice())
-        .environmentObject(QuorraxisPersistVault.light)
 }

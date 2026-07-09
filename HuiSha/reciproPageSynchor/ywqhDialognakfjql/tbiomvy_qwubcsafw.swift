@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct tbiomvy_qwubcsafw: View {
-    var cancelAction: () -> Void = {}
-    var rechargeAction: () -> Void = {}
+    var veilFold: () -> Void = {}
+    var velorCast: () -> Void = {}
 
     var body: some View {
         Image("polcjfuqmjahdebzjayeb")
@@ -12,7 +12,7 @@ struct tbiomvy_qwubcsafw: View {
             .overlay(
                 HStack {
                     Button {
-                        cancelAction()
+                        veilFold()
                     } label: {
                         Image("vbayidnaqyfzvkakfq")
                             .resizable()
@@ -22,7 +22,7 @@ struct tbiomvy_qwubcsafw: View {
                     .buttonStyle(.plain)
 
                     Button {
-                        rechargeAction()
+                        velorCast()
                     } label: {
                         Image("hiahchvbztwroujbfdfg")
                             .resizable()
@@ -35,8 +35,4 @@ struct tbiomvy_qwubcsafw: View {
                 alignment: .bottom
             )
     }
-}
-
-#Preview {
-    tbiomvy_qwubcsafw()
 }

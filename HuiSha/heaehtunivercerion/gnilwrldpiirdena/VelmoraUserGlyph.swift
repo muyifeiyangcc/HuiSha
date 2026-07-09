@@ -6,48 +6,48 @@ let velmoraUserGlyphSeeds: [VelmoraUserGlyph] = [
         id: 0,
         auricMail: "huisha@gmail.com",
         cipherPass: "123456",
-        imageTrace: velmoraCacheAvatarSeed("suarrunexseternimeon1.jpg"),
+        soulTrace: velmoraCacheAvatarSeed("suarrunexseternimeon1.jpg"),
         nameSigil: "枕星",
-        kinshipList: [1, 3, 4],
-        localeMark: "中国大陆",
-        personaKind: "男",
-        yearsCount: 21,
-        refreshResidue: 3
+        kinraMarks: [1, 3, 4],
+        realmMark: "中国大陆",
+        mienKind: "男",
+        yearCount: 21,
+        veyraResidue: 3
     ),
     VelmoraUserGlyph(
         id: 1,
-        imageTrace: velmoraCacheAvatarSeed("suarrunexseternimeon2.jpg"),
+        soulTrace: velmoraCacheAvatarSeed("suarrunexseternimeon2.jpg"),
         nameSigil: "南叙",
-        personaKind: "男",
-        yearsCount: 20
+        mienKind: "男",
+        yearCount: 20
     ),
     VelmoraUserGlyph(
         id: 2,
-        imageTrace: velmoraCacheAvatarSeed("suarrunexseternimeon3.jpg"),
+        soulTrace: velmoraCacheAvatarSeed("suarrunexseternimeon3.jpg"),
         nameSigil: "梧月",
-        personaKind: "男",
-        yearsCount: 24
+        mienKind: "男",
+        yearCount: 24
     ),
     VelmoraUserGlyph(
         id: 3,
-        imageTrace: velmoraCacheAvatarSeed("suarrunexseternimeon4.jpg"),
+        soulTrace: velmoraCacheAvatarSeed("suarrunexseternimeon4.jpg"),
         nameSigil: "月亮打烊",
-        personaKind: "女",
-        yearsCount: 22
+        mienKind: "女",
+        yearCount: 22
     ),
     VelmoraUserGlyph(
         id: 4,
-        imageTrace: velmoraCacheAvatarSeed("suarrunexseternimeon5.jpg"),
+        soulTrace: velmoraCacheAvatarSeed("suarrunexseternimeon5.jpg"),
         nameSigil: "昭禾",
-        personaKind: "女",
-        yearsCount: 23
+        mienKind: "女",
+        yearCount: 23
     ),
     VelmoraUserGlyph(
         id: 5,
-        imageTrace: velmoraCacheAvatarSeed("suarrunexseternimeon6.jpg"),
+        soulTrace: velmoraCacheAvatarSeed("suarrunexseternimeon6.jpg"),
         nameSigil: "芋圆不圆",
-        personaKind: "女",
-        yearsCount: 24
+        mienKind: "女",
+        yearCount: 24
     )
 ]
 
@@ -55,100 +55,100 @@ struct VelmoraUserGlyph: Identifiable, Codable, Equatable {
     let id: Int
     var auricMail: String
     var cipherPass: String
-    var imageTrace: String
+    var soulTrace: String
     var nameSigil: String
-    var gemCount: Int
-    var shadowList: [Int]
-    var kinshipList: [Int]
-    var localeMark: String
-    var personaKind: String
-    var yearsCount: Int
-    var refreshResidue: Int
+    var dianthCount: Int
+    var shadeMarks: [Int]
+    var kinraMarks: [Int]
+    var realmMark: String
+    var mienKind: String
+    var yearCount: Int
+    var veyraResidue: Int
 
     init(
         id: Int,
         auricMail: String = "",
         cipherPass: String = "",
-        imageTrace: String = velmoraCacheAvatarSeed("soulbridgen.png"),
+        soulTrace: String = velmoraCacheAvatarSeed("soulbridgen.png"),
         nameSigil: String = "",
-        gemCount: Int = 0,
-        shadowList: [Int] = [],
-        kinshipList: [Int] = [],
-        localeMark: String = "",
-        personaKind: String = "",
-        yearsCount: Int = 18,
-        refreshResidue: Int = 3
+        dianthCount: Int = 0,
+        shadeMarks: [Int] = [],
+        kinraMarks: [Int] = [],
+        realmMark: String = "",
+        mienKind: String = "",
+        yearCount: Int = 18,
+        veyraResidue: Int = 3
     ) {
         self.id = id
         self.auricMail = auricMail
         self.cipherPass = cipherPass
-        self.imageTrace = imageTrace
+        self.soulTrace = soulTrace
         self.nameSigil = nameSigil
-        self.gemCount = gemCount
-        self.shadowList = shadowList
-        self.kinshipList = kinshipList
-        self.localeMark = localeMark
-        self.personaKind = personaKind
-        self.yearsCount = yearsCount
-        self.refreshResidue = refreshResidue
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case id
-        case auricMail
-        case cipherPass
-        case imageTrace
-        case nameSigil
-        case gemCount
-        case shadowList
-        case kinshipList
-        case localeMark
-        case personaKind
-        case yearsCount
-        case refreshResidue
+        self.dianthCount = dianthCount
+        self.shadeMarks = shadeMarks
+        self.kinraMarks = kinraMarks
+        self.realmMark = realmMark
+        self.mienKind = mienKind
+        self.yearCount = yearCount
+        self.veyraResidue = veyraResidue
     }
 
     init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let container = try decoder.container(keyedBy: VelmoraKeys.self)
         id = try container.decode(Int.self, forKey: .id)
         auricMail = try container.decodeIfPresent(String.self, forKey: .auricMail) ?? ""
         cipherPass = try container.decodeIfPresent(String.self, forKey: .cipherPass) ?? ""
-        imageTrace = try container.decodeIfPresent(String.self, forKey: .imageTrace) ?? velmoraCacheAvatarSeed("suarrunexseternimeon1.jpg")
+        soulTrace = try container.decodeIfPresent(String.self, forKey: .soulTrace) ?? velmoraCacheAvatarSeed("suarrunexseternimeon1.jpg")
         nameSigil = try container.decodeIfPresent(String.self, forKey: .nameSigil) ?? ""
-        gemCount = try container.decodeIfPresent(Int.self, forKey: .gemCount) ?? 0
-        shadowList = try container.decodeIfPresent([Int].self, forKey: .shadowList) ?? []
-        kinshipList = try container.decodeIfPresent([Int].self, forKey: .kinshipList) ?? []
-        localeMark = try container.decodeIfPresent(String.self, forKey: .localeMark) ?? ""
-        personaKind = try container.decodeIfPresent(String.self, forKey: .personaKind) ?? ""
-        yearsCount = try container.decodeIfPresent(Int.self, forKey: .yearsCount) ?? 18
-        refreshResidue = try container.decodeIfPresent(Int.self, forKey: .refreshResidue) ?? 3
+        dianthCount = try container.decodeIfPresent(Int.self, forKey: .dianthCount) ?? 0
+        shadeMarks = try container.decodeIfPresent([Int].self, forKey: .shadeMarks) ?? []
+        kinraMarks = try container.decodeIfPresent([Int].self, forKey: .kinraMarks) ?? []
+        realmMark = try container.decodeIfPresent(String.self, forKey: .realmMark) ?? ""
+        mienKind = try container.decodeIfPresent(String.self, forKey: .mienKind) ?? ""
+        yearCount = try container.decodeIfPresent(Int.self, forKey: .yearCount) ?? 18
+        veyraResidue = try container.decodeIfPresent(Int.self, forKey: .veyraResidue) ?? 3
+    }
+
+    private enum VelmoraKeys: String, CodingKey {
+        case id
+        case auricMail
+        case cipherPass
+        case soulTrace
+        case nameSigil
+        case dianthCount
+        case shadeMarks
+        case kinraMarks
+        case realmMark
+        case mienKind
+        case yearCount
+        case veyraResidue
     }
 }
 
 extension VelmoraUserGlyph {
-    mutating func absorbGems(_ amount: Int) {
-        gemCount = max(0, gemCount + amount)
+    mutating func absorbDianth(_ dianthShift: Int) {
+        dianthCount = max(0, dianthCount + dianthShift)
     }
 
-    mutating func flipShadow(_ targetId: Int) {
-        shadowList.togglePresence(of: targetId)
+    mutating func flipShade(_ shadeMark: Int) {
+        shadeMarks.togglePresence(of: shadeMark)
     }
 
-    mutating func flipKinship(_ targetId: Int) {
-        kinshipList.togglePresence(of: targetId)
+    mutating func flipKinra(_ kinraMark: Int) {
+        kinraMarks.togglePresence(of: kinraMark)
     }
 
-    mutating func absorbRefreshResidue(_ amount: Int) {
-        refreshResidue = max(0, refreshResidue + amount)
+    mutating func absorbVeyra(_ veyraShift: Int) {
+        veyraResidue = max(0, veyraResidue + veyraShift)
     }
 }
 
 private extension Array where Element == Int {
-    mutating func togglePresence(of value: Int) {
-        if contains(value) {
-            removeAll { $0 == value }
+    mutating func togglePresence(of mark: Int) {
+        if contains(mark) {
+            removeAll { $0 == mark }
         } else {
-            append(value)
+            append(mark)
         }
     }
 }
@@ -158,28 +158,28 @@ final class VelmoraUserGlyphStore: ObservableObject {
 
     @Published private(set) var glyphs: [VelmoraUserGlyph] = []
 
-    private let archiveURL: URL = {
-        let base = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        return base.appendingPathComponent("velmoraUserGlyphs.json")
+    private let velmoraVaultURL: URL = {
+        let quorraRoot = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        return quorraRoot.appendingPathComponent("velmoraUserGlyphs.json")
     }()
 
     private init() {
-        restoreGlyphs()
+        awakenGlyphs()
     }
 
     @discardableResult
     func addGlyph(
         auricMail: String = "",
         cipherPass: String = "",
-        imageTrace: String = velmoraCacheAvatarSeed("soulbridgen.png"),
+        soulTrace: String = velmoraCacheAvatarSeed("soulbridgen.png"),
         nameSigil: String,
-        gemCount: Int = 0,
-        shadowList: [Int] = [],
-        kinshipList: [Int] = [],
-        localeMark: String = "",
-        personaKind: String = "",
-        yearsCount: Int = 18,
-        refreshResidue: Int = 3
+        dianthCount: Int = 0,
+        shadeMarks: [Int] = [],
+        kinraMarks: [Int] = [],
+        realmMark: String = "",
+        mienKind: String = "",
+        yearCount: Int = 18,
+        veyraResidue: Int = 3
     ) -> Int {
         let nextId = (glyphs.map(\.id).max() ?? -1) + 1
         glyphs.append(
@@ -187,148 +187,148 @@ final class VelmoraUserGlyphStore: ObservableObject {
                 id: nextId,
                 auricMail: auricMail,
                 cipherPass: cipherPass,
-                imageTrace: imageTrace,
+                soulTrace: soulTrace,
                 nameSigil: nameSigil,
-                gemCount: gemCount,
-                shadowList: shadowList,
-                kinshipList: kinshipList,
-                localeMark: localeMark,
-                personaKind: personaKind,
-                yearsCount: yearsCount,
-                refreshResidue: refreshResidue
+                dianthCount: dianthCount,
+                shadeMarks: shadeMarks,
+                kinraMarks: kinraMarks,
+                realmMark: realmMark,
+                mienKind: mienKind,
+                yearCount: yearCount,
+                veyraResidue: veyraResidue
             )
         )
-        persistGlyphs()
+        sealGlyphs()
         return nextId
     }
 
-    func reviseAuricMail(id: Int, value: String) {
-        mutateGlyph(id: id) { $0.auricMail = value }
+    func reviseAuricMail(id selfMark: Int, value auricRune: String) {
+        mutateGlyph(id: selfMark) { $0.auricMail = auricRune }
     }
 
-    func reviseCipherPass(id: Int, value: String) {
-        mutateGlyph(id: id) { $0.cipherPass = value }
+    func reviseCipherPass(id selfMark: Int, value cipherRune: String) {
+        mutateGlyph(id: selfMark) { $0.cipherPass = cipherRune }
     }
 
-    func reviseImageTrace(id: Int, value: String) {
-        mutateGlyph(id: id) { $0.imageTrace = value }
+    func reviseSoulTrace(id selfMark: Int, value soulRune: String) {
+        mutateGlyph(id: selfMark) { $0.soulTrace = soulRune }
     }
 
-    func reviseImageTrace(id: Int, avatarData: Data) {
-        guard let path = velmoraStoreAvatarData(avatarData, userId: id) else { return }
-        reviseImageTrace(id: id, value: path)
+    func reviseSoulTrace(id selfMark: Int, soulBytes: Data) {
+        guard let soulPath = velmoraStoreAvatarData(soulBytes, userId: selfMark) else { return }
+        reviseSoulTrace(id: selfMark, value: soulPath)
     }
 
-    func reviseNameSigil(id: Int, value: String) {
-        mutateGlyph(id: id) { $0.nameSigil = value }
+    func reviseNameSigil(id selfMark: Int, value nameRune: String) {
+        mutateGlyph(id: selfMark) { $0.nameSigil = nameRune }
     }
 
-    func reviseGemCount(id: Int, value: Int) {
-        mutateGlyph(id: id) { $0.gemCount = max(0, value) }
+    func reviseDianthCount(id selfMark: Int, value dianthRune: Int) {
+        mutateGlyph(id: selfMark) { $0.dianthCount = max(0, dianthRune) }
     }
 
-    func shiftGemCount(id: Int, amount: Int) {
-        mutateGlyph(id: id) { $0.absorbGems(amount) }
+    func shiftDianthCount(id selfMark: Int, amount dianthShift: Int) {
+        mutateGlyph(id: selfMark) { $0.absorbDianth(dianthShift) }
     }
 
-    func reviseShadowList(id: Int, value: [Int]) {
-        mutateGlyph(id: id) { $0.shadowList = value }
+    func reviseShadeMarks(id selfMark: Int, value shadeRunes: [Int]) {
+        mutateGlyph(id: selfMark) { $0.shadeMarks = shadeRunes }
     }
 
-    func toggleShadow(id: Int, targetId: Int) {
-        mutateGlyph(id: id) { $0.flipShadow(targetId) }
+    func toggleShade(id selfMark: Int, targetId shadeMark: Int) {
+        mutateGlyph(id: selfMark) { $0.flipShade(shadeMark) }
     }
 
-    func reviseKinshipList(id: Int, value: [Int]) {
-        mutateGlyph(id: id) { $0.kinshipList = value }
+    func reviseKinraMarks(id selfMark: Int, value kinraRunes: [Int]) {
+        mutateGlyph(id: selfMark) { $0.kinraMarks = kinraRunes }
     }
 
-    func toggleKinship(id: Int, targetId: Int) {
-        mutateGlyph(id: id) { $0.flipKinship(targetId) }
+    func toggleKinra(id selfMark: Int, targetId kinraMark: Int) {
+        mutateGlyph(id: selfMark) { $0.flipKinra(kinraMark) }
     }
 
-    func reviseLocaleMark(id: Int, value: String) {
-        mutateGlyph(id: id) { $0.localeMark = value }
+    func reviseRealmMark(id selfMark: Int, value realmRune: String) {
+        mutateGlyph(id: selfMark) { $0.realmMark = realmRune }
     }
 
-    func revisePersonaKind(id: Int, value: String) {
-        mutateGlyph(id: id) { $0.personaKind = value }
+    func reviseMienKind(id selfMark: Int, value mienRune: String) {
+        mutateGlyph(id: selfMark) { $0.mienKind = mienRune }
     }
 
-    func reviseYearsCount(id: Int, value: Int) {
-        mutateGlyph(id: id) { $0.yearsCount = max(0, value) }
+    func reviseYearCount(id selfMark: Int, value yearRune: Int) {
+        mutateGlyph(id: selfMark) { $0.yearCount = max(0, yearRune) }
     }
 
-    func reviseRefreshResidue(id: Int, value: Int) {
-        mutateGlyph(id: id) { $0.refreshResidue = max(0, value) }
+    func reviseVeyraResidue(id selfMark: Int, value veyraRune: Int) {
+        mutateGlyph(id: selfMark) { $0.veyraResidue = max(0, veyraRune) }
     }
 
-    func shiftRefreshResidue(id: Int, amount: Int) {
-        mutateGlyph(id: id) { $0.absorbRefreshResidue(amount) }
+    func shiftVeyraResidue(id selfMark: Int, amount veyraShift: Int) {
+        mutateGlyph(id: selfMark) { $0.absorbVeyra(veyraShift) }
     }
 
-    private func restoreGlyphs() {
-        guard FileManager.default.fileExists(atPath: archiveURL.path) else {
+    private func awakenGlyphs() {
+        guard FileManager.default.fileExists(atPath: velmoraVaultURL.path) else {
             glyphs = velmoraUserGlyphSeeds
-            persistGlyphs()
+            sealGlyphs()
             return
         }
 
         do {
-            let data = try Data(contentsOf: archiveURL)
-            glyphs = try JSONDecoder().decode([VelmoraUserGlyph].self, from: data)
+            let velmoraBytes = try Data(contentsOf: velmoraVaultURL)
+            glyphs = try JSONDecoder().decode([VelmoraUserGlyph].self, from: velmoraBytes)
         } catch {
             glyphs = velmoraUserGlyphSeeds
-            persistGlyphs()
+            sealGlyphs()
         }
     }
 
     private func mutateGlyph(id: Int, transform: (inout VelmoraUserGlyph) -> Void) {
-        guard let index = glyphs.firstIndex(where: { $0.id == id }) else { return }
+        guard let glyphIndex = glyphs.firstIndex(where: { $0.id == id }) else { return }
         objectWillChange.send()
-        transform(&glyphs[index])
-        persistGlyphs()
+        transform(&glyphs[glyphIndex])
+        sealGlyphs()
     }
 
-    private func persistGlyphs() {
-        guard let data = try? JSONEncoder().encode(glyphs) else { return }
-        try? data.write(to: archiveURL)
+    private func sealGlyphs() {
+        guard let velmoraBytes = try? JSONEncoder().encode(glyphs) else { return }
+        try? velmoraBytes.write(to: velmoraVaultURL)
     }
 }
 
-func velmoraCacheAvatarSeed(_ fileName: String) -> String {
-    let manager = FileManager.default
-    let folder = velmoraAvatarFolderURL()
-    try? manager.createDirectory(at: folder, withIntermediateDirectories: true)
+func velmoraCacheAvatarSeed(_ soulFile: String) -> String {
+    let qorraManager = FileManager.default
+    let soulFolder = velmoraAvatarFolderURL()
+    try? qorraManager.createDirectory(at: soulFolder, withIntermediateDirectories: true)
 
-    let destination = folder.appendingPathComponent(fileName)
-    guard !manager.fileExists(atPath: destination.path) else {
-        return destination.path
+    let soulTarget = soulFolder.appendingPathComponent(soulFile)
+    guard !qorraManager.fileExists(atPath: soulTarget.path) else {
+        return soulTarget.path
     }
 
-    let bundleURL = Bundle.main.url(forResource: fileName, withExtension: nil, subdirectory: "purelinkinfinite")
-        ?? Bundle.main.url(forResource: fileName, withExtension: nil)
-    guard let source = bundleURL else { return "" }
+    let soulBundleURL = Bundle.main.url(forResource: soulFile, withExtension: nil, subdirectory: "purelinkinfinite")
+        ?? Bundle.main.url(forResource: soulFile, withExtension: nil)
+    guard let soulSource = soulBundleURL else { return "" }
 
     do {
-        try manager.copyItem(at: source, to: destination)
-        return destination.path
+        try qorraManager.copyItem(at: soulSource, to: soulTarget)
+        return soulTarget.path
     } catch {
         return ""
     }
 }
 
-func velmoraStoreAvatarData(_ data: Data, userId: Int) -> String? {
-    let manager = FileManager.default
-    let folder = velmoraAvatarFolderURL()
-    try? manager.createDirectory(at: folder, withIntermediateDirectories: true)
+func velmoraStoreAvatarData(_ soulBytes: Data, userId selfMark: Int) -> String? {
+    let qorraManager = FileManager.default
+    let soulFolder = velmoraAvatarFolderURL()
+    try? qorraManager.createDirectory(at: soulFolder, withIntermediateDirectories: true)
 
-    let fileName = "velmora_avatar_\(userId)_\(Int(Date().timeIntervalSince1970)).jpg"
-    let destination = folder.appendingPathComponent(fileName)
+    let soulFile = "velmora_avatar_\(selfMark)_\(Int(Date().timeIntervalSince1970)).jpg"
+    let soulTarget = soulFolder.appendingPathComponent(soulFile)
 
     do {
-        try data.write(to: destination, options: .atomic)
-        return destination.path
+        try soulBytes.write(to: soulTarget, options: .atomic)
+        return soulTarget.path
     } catch {
         return nil
     }
