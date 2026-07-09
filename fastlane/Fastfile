@@ -1,0 +1,108 @@
+default_platform(:ios)
+
+
+
+username = ENV["FASTLANE_USER"]
+asc_key_id = ENV["ASC_KEY_ID"]
+asc_issuer_id = ENV["ASC_ISSUER_ID"]
+asc_key_content = ENV["ASC_KEY_CONTENT"]
+
+team_id = ENV["TEAM_ID"]
+scheme = ENV["SCHEME"]
+bundle_id = ENV["BUNDLE_ID"]
+app_name = ENV["APP_NAME"]
+export_method = ENV["EXPORT_METHOD"]
+
+pgy_api_key = ENV["pgy_api_key"]
+
+
+platform :ios do
+
+  before_all do |lane, options|
+
+    UI.header "Step: before_all"
+    UI.header "options = '#{options}'"
+
+    UI.important "username = #{username}"
+  	UI.important "asc_key_id = #{asc_key_id}"
+  	UI.important "asc_issuer_id = #{asc_issuer_id}"
+  	UI.important "asc_key_content = #{asc_key_content}"
+
+  	UI.important "bundle_id = #{bundle_id}"
+  	UI.important "app_name = #{app_name}"
+  	UI.important "export_method = #{export_method}"
+  	UI.important "match_type = #{export_method.gsub("-", "")}"
+  	UI.important "pgy_api_key = #{pgy_api_key}"
+
+	  UI.important "is_ci = #{is_ci}"
+
+    setup_circle_ci
+  end
+
+  lane :release do
+    on_match
+    prepare_gym
+    gym(
+      project: "HuiSha.xcodeproj",
+      scheme: ENV["SCHEME"],
+      clean: true,
+
+      export_method: export_method,
+      output_directory: "./build",
+      output_name: "HuiSha.ipa"
+    )
+  end
+
+  lane :on_match do
+
+    app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_filepath: "AuthKey_#{ENV["ASC_KEY_ID"]}.p8",
+      in_house: false
+    )
+
+  	match(
+        git_branch: username,
+        username: username,
+        type: "appstore",
+        app_identifier: [bundle_id],
+        force_for_new_devices: true,
+        readonly: false,
+        )
+
+    match_result = match(
+        git_branch: username,
+        username: username,
+        type: export_method.gsub("-", ""),
+        app_identifier: [bundle_id],
+        readonly: false,
+        )
+    puts match_result
+    UI.important("✅ match_result: #{match_result}")
+    profiles = lane_context[SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING]
+	  UI.important("profiles = #{profiles}")
+
+  end
+
+  lane :prepare_gym do
+
+    team_id = ENV["sigh_#{bundle_id}_development_team-id"]
+    UI.important("Team ID: #{team_id}")
+
+    profile_name = ENV["sigh_#{bundle_id}_development_profile-name"]
+	  UI.important "profile_name = #{profile_name}"
+
+    update_code_signing_settings(
+      path: "HuiSha.xcodeproj",
+      use_automatic_signing: false,
+      team_id: "U88J68K9VY",
+      targets: ["HuiSha"],
+      code_sign_identity: "Apple Distribution",
+      profile_name: "match AppStore com.hufuqwgosaive.Huisha",
+    )
+    
+
+  end
+
+end
