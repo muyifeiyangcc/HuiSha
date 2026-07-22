@@ -45,6 +45,7 @@ struct QuenraLuminethShell<Content: View>: View {
 
 struct VellumQuorraxisStack: View {
     let rows: [ElarionVaskethra]
+    @State private var activeVaskethraID: String?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
@@ -75,11 +76,9 @@ struct VellumQuorraxisStack: View {
                                     .padding(.horizontal, 12)
                             }
                         } else {
-                            Menu {
-                                ForEach(row.options, id: \.self) { option in
-                                    Button(option) {
-                                        row.value.wrappedValue = option
-                                    }
+                            Button {
+                                withAnimation(.easeOut(duration: 0.12)) {
+                                    activeVaskethraID = activeVaskethraID == row.id ? nil : row.id
                                 }
                             } label: {
                                 HStack {
@@ -91,6 +90,8 @@ struct VellumQuorraxisStack: View {
                                 }
                                 .padding(.horizontal, 12)
                                 .frame(height: 43)
+                                .frame(maxWidth: .infinity)
+                                .contentShape(Rectangle())
                             }
                             .buttonStyle(.plain)
                         }
@@ -102,6 +103,36 @@ struct VellumQuorraxisStack: View {
                                 .frame(maxWidth: .infinity, alignment: .trailing)
                                 .padding(.trailing, 21)
                         }
+                    }
+
+                    if !row.options.isEmpty, activeVaskethraID == row.id {
+                        VStack(spacing: 0) {
+                            ForEach(row.options, id: \.self) { option in
+                                Button {
+                                    row.value.wrappedValue = option
+                                    withAnimation(.easeOut(duration: 0.12)) {
+                                        activeVaskethraID = nil
+                                    }
+                                } label: {
+                                    Text(option)
+                                        .font(.system(size: 15))
+                                        .foregroundColor(AuvrionChromatics.nyraxisCalvethor)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .frame(height: 38)
+                                        .padding(.horizontal, 12)
+                                        .contentShape(Rectangle())
+                                }
+                                .buttonStyle(.plain)
+                                .frame(maxWidth: .infinity)
+
+                                if option != row.options.last {
+                                    Divider()
+                                        .padding(.horizontal, 12)
+                                }
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                        .background(AuvrionChromatics.mirelleVoxidian, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                     }
                 }
             }

@@ -46,7 +46,7 @@ struct huuDiversionQhorf: View {
                     Image(asknuejkyqqocb == 0 ? "genuineticflow" : "spiritgridmatrix")
                         .resizable()
                         .scaledToFit()
-                        .frame(height: 44)
+                        .frame(height: 40)
                 }
                 .buttonStyle(.plain)
                 
@@ -56,7 +56,7 @@ struct huuDiversionQhorf: View {
                     Image(asknuejkyqqocb == 1 ? "trueessencecircle" : "soulpulsevibrant")
                         .resizable()
                         .scaledToFit()
-                        .frame(height: 44)
+                        .frame(height: 40)
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.plain)
@@ -67,16 +67,16 @@ struct huuDiversionQhorf: View {
                     Image(asknuejkyqqocb == 2 ? "heartwavesynergy" : "corebeaconguide")
                         .resizable()
                         .scaledToFit()
-                        .frame(height: 44)
+                        .frame(height: 40)
                 }
                 .buttonStyle(.plain)
             }
             .padding(.horizontal, 16)
-            .padding(.vertical, 12)
+            .padding(.vertical, 8)
             .background(.white)
             .clipShape(RoundedRectangle(cornerRadius: 20))
             .frame(maxHeight: .infinity, alignment: .bottom)
-            .padding(.bottom, 35)
+            .padding(.bottom, 30)
             .padding(.horizontal, 28)
         }
         .ignoresSafeArea()

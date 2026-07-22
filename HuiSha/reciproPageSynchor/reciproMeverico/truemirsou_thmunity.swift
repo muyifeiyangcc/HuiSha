@@ -44,11 +44,45 @@ struct truemirsou_thmunity: View {
                     .padding(.trailing, 16)
                 }
                 .padding(.top, 52)
-                .padding(.bottom, 108)
+                .padding(.bottom, 78)
                 
                 VStack(spacing: 0) {
                     ScrollView(showsIndicators: false) {
-                        VStack(spacing: 40) {
+                        VStack(spacing: 0) {
+                            VStack(spacing: 0){
+                                HStack(spacing: 12) {
+                                    Text(mienSigil)
+                                        .font(.system(size: 14, weight: .medium))
+                                        .foregroundColor(.white)
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 2)
+                                        .background(
+                                            AuvrionChromatics.sylvarnEphorix,
+                                            in: Capsule()
+                                        )
+                                        .opacity(0)
+                                    
+                                    Text(auvrionPulse?.nameSigil ?? "未知用户")
+                                        .font(.system(size: 20, weight: .bold))
+                                        .foregroundColor(AuvrionChromatics.nyraxisCalvethor)
+
+                                    Text(mienSigil)
+                                        .font(.system(size: 14, weight: .medium))
+                                        .foregroundColor(.white)
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 2)
+                                        .background(
+                                            AuvrionChromatics.sylvarnEphorix,
+                                            in: Capsule()
+                                        )
+                                }
+                                .padding(.bottom, 10)
+                                
+                                Text("ID：\(velmoraDisplayUserId(auvrionPulse?.id ?? qorraVault.auvrionSelqareth))")
+                                    .font(.system(size: 17))
+                                    .foregroundColor(AuvrionChromatics.vellumQuorraxis)
+                            }
+                            
                             Button {
                                 handleCoinTap()
                             } label: {
@@ -56,7 +90,7 @@ struct truemirsou_thmunity: View {
                                     Image("everlastnulispareone")
                                         .resizable()
                                         .scaledToFit()
-                                        .frame(height: 80)
+                                        .frame(height: 76)
 
                                     Text("\(auvrionPulse?.dianthCount ?? 0)")
                                         .font(.system(size: 20, weight: .bold))
@@ -65,6 +99,8 @@ struct truemirsou_thmunity: View {
                                 }
                             }
                             .buttonStyle(.plain)
+                            .padding(.bottom, 20)
+                            .padding(.top, 20)
                         
                             VStack(spacing: 8) {
                                 profileRune("编辑信息", cast: editProfileAction)
@@ -73,11 +109,12 @@ struct truemirsou_thmunity: View {
                                 profileRune("用户协议", cast: userAgreementAction)
                             }
                         }
-                        .padding(.vertical, 15)
+                        .padding(.top, 12)
                         .padding(.horizontal, 16)
+                        .padding(.bottom, 110)
                     }
                 }
-                .padding(.top, 105)
+                .padding(.top, 25)
                 .frame(maxWidth: .infinity)
                 .background(
                     TopRoundVeylora(radius: 24)
@@ -88,43 +125,9 @@ struct truemirsou_thmunity: View {
             VStack(spacing: 0) {
                 soulOrb(path: auvrionPulse?.soulTrace ?? "")
                     .allowsHitTesting(false)
-                
-                HStack(spacing: 12) {
-                    Text(mienSigil)
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 2)
-                        .background(
-                            AuvrionChromatics.sylvarnEphorix,
-                            in: Capsule()
-                        )
-                        .opacity(0)
-                    
-                    Text(auvrionPulse?.nameSigil ?? "未知用户")
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(AuvrionChromatics.nyraxisCalvethor)
-
-                    Text(mienSigil)
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 2)
-                        .background(
-                            AuvrionChromatics.sylvarnEphorix,
-                            in: Capsule()
-                        )
-                }
-                .padding(.top, 13)
-                .padding(.bottom, 10)
-                
-                Text("ID：\(velmoraDisplayUserId(auvrionPulse?.id ?? qorraVault.auvrionSelqareth))")
-                    .font(.system(size: 17))
-                    .foregroundColor(AuvrionChromatics.vellumQuorraxis)
-                
                 Spacer()
             }
-            .padding(.top, 130)
+            .padding(.top, 100)
         }
         .ignoresSafeArea()
     }
@@ -165,10 +168,10 @@ struct truemirsou_thmunity: View {
             cast()
         } label: {
             Text(title)
-                .font(.system(size: 18))
+                .font(.system(size: 17))
                 .foregroundColor(.black)
                 .padding(.horizontal, 32)
-                .padding(.vertical, 12)
+                .padding(.vertical, 10)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(.white)
                 .clipShape(Capsule())

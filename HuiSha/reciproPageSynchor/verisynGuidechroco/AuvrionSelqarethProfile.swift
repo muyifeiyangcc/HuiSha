@@ -30,54 +30,60 @@ struct AuvrionSelqarethProfile: View {
 
     var body: some View {
         QuenraLuminethShell(backAction: backAction) {
-            VStack(spacing: 0) {
-                ZStack(alignment: .bottomTrailing) {
-                    if let caldrisVeyonneth {
-                        caldrisVeyonneth
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 89, height: 89)
-                            .clipShape(Circle())
-                    } else {
-                        Image("soulbridgen")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 89, height: 89)
-                    }
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 0) {
+                    ZStack(alignment: .bottomTrailing) {
+                        if let caldrisVeyonneth {
+                            caldrisVeyonneth
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 89, height: 89)
+                                .clipShape(Circle())
+                        } else {
+                            Image("soulbridgen")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 89, height: 89)
+                        }
 
-                    PhotosPicker(selection: $sylvarnEphorix, matching: .images) {
-                        Image("purespector")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 41, height: 34)
+                        PhotosPicker(selection: $sylvarnEphorix, matching: .images) {
+                            Image("purespector")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 41, height: 34)
+                        }
+                        .buttonStyle(.plain)
+                        .offset(x: 38, y: -2)
                     }
-                    .buttonStyle(.plain)
-                    .offset(x: 38, y: -2)
-                }
-                .padding(.top, 124)
-                .onChange(of: sylvarnEphorix) { newValue in
-                    Task {
-                        if let pickedSoul = try? await newValue?.loadTransferable(type: Data.self),
-                           let soulImage = UIImage(data: pickedSoul) {
-                            soulBytes = pickedSoul
-                            caldrisVeyonneth = Image(uiImage: soulImage)
+                    .padding(.top, 110)
+                    .onChange(of: sylvarnEphorix) { newValue in
+                        Task {
+                            if let pickedSoul = try? await newValue?.loadTransferable(type: Data.self),
+                               let soulImage = UIImage(data: pickedSoul) {
+                                soulBytes = pickedSoul
+                                caldrisVeyonneth = Image(uiImage: soulImage)
+                            }
                         }
                     }
+
+                    VellumQuorraxisStack(rows: [
+                        ElarionVaskethra(label: "heartlinkco", placeholder: "请输入", value: $auvrionSelqareth),
+                        ElarionVaskethra(label: "genuflowco", placeholder: "请选择", value: $nyraxisCalvethor, hasChevron: true, options: ["中国大陆", "中国香港", "中国台湾", "海外"]),
+                        ElarionVaskethra(label: "recipauthentic", placeholder: "请选择", value: $quorraxisMirelle, hasChevron: true, options: ["男", "女", "不公开"]),
+                        ElarionVaskethra(label: "authenticrecip", placeholder: "请选择", value: $vellumAsterion, hasChevron: true, options: yearRunes)
+                    ])
+                    .padding(.top, 40)
+
+                    MorvianLethirax(asset: "verimutualcore", action: sealSelqareth)
+                        .padding(.top, 54)
+                        .padding(.bottom, 45)
                 }
-
-                VellumQuorraxisStack(rows: [
-                    ElarionVaskethra(label: "heartlinkco", placeholder: "请输入", value: $auvrionSelqareth),
-                    ElarionVaskethra(label: "genuflowco", placeholder: "请选择", value: $nyraxisCalvethor, hasChevron: true, options: ["中国大陆", "中国香港", "中国台湾", "海外"]),
-                    ElarionVaskethra(label: "recipauthentic", placeholder: "请选择", value: $quorraxisMirelle, hasChevron: true, options: ["男", "女", "不公开"]),
-                    ElarionVaskethra(label: "authenticrecip", placeholder: "请选择", value: $vellumAsterion, hasChevron: true, options: yearRunes)
-                ])
-                .padding(.top, 62)
-
-                Spacer()
-
-                MorvianLethirax(asset: "verimutualcore", action: sealSelqareth)
-                    .padding(.bottom, 45)
+                .frame(maxWidth: .infinity)
             }
+            .safeAreaInset(edge: .bottom) {
+                Color.clear.frame(height: 12)
+            }
+
         }
         .ignoresSafeArea()
         .onAppear {
